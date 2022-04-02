@@ -1,4 +1,4 @@
-;; My Custom Emacs Config
+; My Custom Emacs Config
 ;;
 
 ;; STARTUP
@@ -108,7 +108,7 @@
 ;; Override the basic Emacs commands
 (use-package counsel
   :bind* ; load when pressed 
-  (("M-x"     . counsel-m-x)
+  (("M-x"     . counsel-M-x)
    ("C-s"     . swiper)
    ("C-x b"   . counsel-ibuffer)
    ("C-x c-f" . counsel-find-file)
@@ -125,6 +125,14 @@
    ("<f2> i"  . counsel-info-lookup-symbol)
    ("<f2> u"  . counsel-unicode-char)
    ("C-c C-r" . ivy-resume)))     ; resume last ivy-based completion
+
+;; Use General for keybindings
+(use-package general)
+
+;; Be Evil!
+(use-package evil)
+  :config
+  (evil-mode 1)
 
 ;; Improved help menu
 (use-package helpful
