@@ -140,7 +140,7 @@
 
   ;; Use visual line motions even outside of visual-line-mode buffers
   (evil-global-set-key 'motion "j" 'evil-next-visual-line)
-  (evil-global-set-key 'motion "k" 'evil-previous-visual-line)
+  (evil-global-set-key 'motion "k" 'evil-previous-visual-line))
 
 ;; Improved help menu
 (use-package helpful
