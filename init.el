@@ -130,9 +130,17 @@
 (use-package general)
 
 ;; Be Evil!
-(use-package evil)
+(use-package evil
+  :init
+  (setq evil-want-integration t)
+  (setq evil-want-keybindings nil)
   :config
   (evil-mode 1)
+  (define-key evil-insert-state-map (kbd "C-g") 'evil-normal-state)
+
+  ;; Use visual line motions even outside of visual-line-mode buffers
+  (evil-global-set-key 'motion "j" 'evil-next-visual-line)
+  (evil-global-set-key 'motion "k" 'evil-previous-visual-line)
 
 ;; Improved help menu
 (use-package helpful
