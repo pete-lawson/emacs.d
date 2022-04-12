@@ -127,13 +127,44 @@
    ("C-c C-r" . ivy-resume)))     ; resume last ivy-based completion
 
 ;; Use General for keybindings
-(use-package general)
+(use-package general
+  :config
+  (general-create-definer leader-keys
+    :keymaps '(normal insert visual emacs)
+    :prefix "SPC"
+    :global-prefix "C-SPC")
+
+  (leader-keys
+    ;; Theme
+   "t" '(:ignore t :which-key "theming")
+   "tt" '(counsel-load-theme :which-key "choose-theme")
+   "ts" '(hydra-text-scale/body :which-key "scale text")
+
+   ;; Buffer
+   "b" '(:ignore t :which-key "buffer")
+   "be" '(eval-buffer :which-key "eval buffer")
+
+   
+   ;; Search  
+   "s" '(:ignore t :which-key "search")
+   "sb" '(swiper :which-key "search buffer")
+  ))
+
+
+;; Hydra for active reactive commands (increase/decrease font for example)
+(use-package hydra)
+
+(defhydra hydra-text-scale (:timeout 4)
+  "scale text"
+  ("j" text-scale-increase "in")
+  ("k" text-scale-increase "out")
+  ("f" nil "finished" :exit t))
 
 ;; Be Evil!
 (use-package evil
   :init
   (setq evil-want-integration t)
-  (setq evil-want-keybindings nil)
+  (setq evil-want-keybinding nil)
   :config
   (evil-mode 1)
   (define-key evil-insert-state-map (kbd "C-g") 'evil-normal-state)
@@ -141,6 +172,14 @@
   ;; Use visual line motions even outside of visual-line-mode buffers
   (evil-global-set-key 'motion "j" 'evil-next-visual-line)
   (evil-global-set-key 'motion "k" 'evil-previous-visual-line))
+
+
+;; Add missing evil keybindings
+(use-package evil-collection
+  :after evil
+  :ensure t
+  :config
+  (evil-collection-init))
 
 ;; Improved help menu
 (use-package helpful
