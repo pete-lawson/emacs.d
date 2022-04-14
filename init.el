@@ -143,11 +143,16 @@
    ;; Buffer
    "b" '(:ignore t :which-key "buffer")
    "be" '(eval-buffer :which-key "eval buffer")
+   "bb" '(switch-to-buffer :which-key "switch buffer")
+   "bj" '(switch-to-next-buffer :which-key "next buffer")
+   "bk" '(switch-to-prev-buffer :which-key "previous buffer")
+   "be" '(eval-buffer :which-key "eval buffer")
 
    
    ;; Search  
-   "s" '(:ignore t :which-key "search")
-   "sb" '(swiper :which-key "search buffer")
+   "f" '(:ignore t :which-key "find")
+   "fb" '(swiper :which-key "find in buffer")
+   "ff" '(find-file :which-key "find file")
   ))
 
 
@@ -191,6 +196,18 @@
   ([remap describe-command]  . helpful-command)
   ([remap describe-variable] . counsel-describe-variable)
   ([remap describe-key]      . helpful-key))
+
+;; Use projectile for managing projects
+(use-package projectile
+  :diminish projectile-mode
+  :config (projectile-mode)
+  :bind-keymap
+  ("C-c p" . projectile-command-map)
+  :init
+  (when (file-directory-p "~/dev")
+    (setq projectile-project-search-path '("~/dev")))
+  ;; Set the first thing projectile does when switching to a new project.
+  (setq projectile-switch-project-action #'projectile-dired))
 
 ;; Move custom set variables to separate directory
 (setq custom-file (concat user-emacs-directory "/custom.el"))
