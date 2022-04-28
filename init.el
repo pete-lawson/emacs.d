@@ -148,11 +148,15 @@
    "bk" '(switch-to-prev-buffer :which-key "previous buffer")
    "be" '(eval-buffer :which-key "eval buffer")
 
-   
    ;; Search  
    "f" '(:ignore t :which-key "find")
    "fb" '(swiper :which-key "find in buffer")
    "ff" '(find-file :which-key "find file")
+
+   ;; Project
+   "p" '(:ignore t :which-key "project")
+   "pp" '(counsel-projectile-switch-project :which-key "switch project")
+   "pf" '(counsel-projectile-rg :which-key "find file")
   ))
 
 
@@ -177,7 +181,6 @@
   ;; Use visual line motions even outside of visual-line-mode buffers
   (evil-global-set-key 'motion "j" 'evil-next-visual-line)
   (evil-global-set-key 'motion "k" 'evil-previous-visual-line))
-
 
 ;; Add missing evil keybindings
 (use-package evil-collection
@@ -210,5 +213,13 @@
   ;; Set the first thing projectile does when switching to a new project.
   (setq projectile-switch-project-action #'projectile-dired))
 
+;; Use ivy integration for extra actions with alt-o
+(use-package counsel-projectile
+  :config (counsel-projectile-mode))
+
 ;; Move custom set variables to separate directory
 (setq custom-file (concat user-emacs-directory "/custom.el"))
+
+;; Use magit for VC
+(use-package magit)
+
