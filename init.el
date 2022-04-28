@@ -157,6 +157,10 @@
    "p" '(:ignore t :which-key "project")
    "pp" '(counsel-projectile-switch-project :which-key "switch project")
    "pf" '(counsel-projectile-rg :which-key "find file")
+
+   ;; Git
+   "g" '(:ignore t :which-key "git")
+   "gs" '(magit-status :which-key "status")
   ))
 
 
