@@ -152,6 +152,7 @@
    "f" '(:ignore t :which-key "find")
    "fb" '(swiper :which-key "find in buffer")
    "ff" '(find-file :which-key "find file")
+   "fr" '(counsel-recentf :which-key "recent files")
 
    ;; Project
    "p" '(:ignore t :which-key "project")
@@ -227,3 +228,48 @@
 ;; Use magit for VC
 (use-package magit)
 
+;; Recent File Finder
+(use-package recentf
+      :bind ("C-x C-r" . recentf-open-files)
+      :config
+      (recentf-mode 1)
+      (setq recentf-max-menu-items 15
+            recentf-max-saved-items 100)
+      :hook (after-init . recentf-mode))
+
+;; Org Configuration custom functions
+(defun org-font-setup ()
+
+  ;; Set faces for heading levels
+  (dolist (face '((org-level-1 . 1.4)
+                  (org-level-2 . 1.3)
+                  (org-level-3 . 1.2)
+                  (org-level-4 . 1.1)
+                  (org-level-5 . 1.1)
+                  (org-level-6 . 1.1)
+                  (org-level-7 . 1.1)
+                  (org-level-8 . 1.1)))
+    (set-face-attribute (car face) nil :font "ETBembo" :weight 'regular :height (cdr face)))
+
+  ;; Ensure that anything that should be fixed-pitch in Org files appears that way
+  (set-face-attribute 'org-block nil :foreground nil :inherit 'fixed-pitch)
+  (set-face-attribute 'org-code nil   :inherit '(shadow fixed-pitch))
+  (set-face-attribute 'org-table nil   :inherit '(shadow fixed-pitch))
+  (set-face-attribute 'org-verbatim nil :inherit '(shadow fixed-pitch))
+  (set-face-attribute 'org-special-keyword nil :inherit '(font-lock-comment-face fixed-pitch))
+  (set-face-attribute 'org-meta-line nil :inherit '(font-lock-comment-face fixed-pitch))
+  (set-face-attribute 'org-checkbox nil :inherit 'fixed-pitch))
+
+;; Org-Mode!
+(use-package org
+  :config
+  (setq org-ellipsis "  ▼")
+  (setq org-hide-leading-stars nil)
+  (org-font-setup))
+
+
+(use-package org-superstar
+  :after org
+  :hook (org-mode . org-superstar-mode)
+  :config
+  (setq org-superstar-leading-bullet ?\s))
