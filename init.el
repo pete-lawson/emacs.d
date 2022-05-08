@@ -10,7 +10,7 @@
 ;; -----------------------
 
 ;; Font 
-(set-face-attribute 'default nil :font "Source Code Pro" :height 140)
+(set-face-attribute 'default nil :font "Fira Code Retina" :height 140)
 
 ;; Interface
 (scroll-bar-mode -1)     ; Disable visible scrollbar
@@ -260,12 +260,19 @@
   (set-face-attribute 'org-meta-line nil :inherit '(font-lock-comment-face fixed-pitch))
   (set-face-attribute 'org-checkbox nil :inherit 'fixed-pitch))
 
+
+(defun org-visual-fill ()
+  (setq visual-fill-column-width 100
+        visual-fill-column-center-text t)
+  (visual-fill-column-mode 1))
+
 ;; Org-Mode!
 (use-package org
   :config
   (setq org-ellipsis "  ▼")
   (setq org-hide-leading-stars nil)
-  (org-font-setup))
+  (org-font-setup)
+  (org-visual-fill))
 
 
 (use-package org-superstar
@@ -273,3 +280,7 @@
   :hook (org-mode . org-superstar-mode)
   :config
   (setq org-superstar-leading-bullet ?\s))
+
+;; Add visual padding to left of org-mode
+(use-package visual-fill-column
+  :hook (org-mode . org-visual-fill))
