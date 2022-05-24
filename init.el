@@ -153,6 +153,7 @@
    "bj" '(switch-to-next-buffer :which-key "next buffer")
    "bk" '(switch-to-prev-buffer :which-key "previous buffer")
    "be" '(eval-buffer :which-key "eval buffer")
+   "bd" '(kill-buffer :which-key "delete buffer")
 
    ;; Search  
    "f" '(:ignore t :which-key "find")
@@ -167,7 +168,26 @@
 
    ;; Git
    "g" '(:ignore t :which-key "git")
-   "gs" '(magit-status :which-key "status")
+   "gg" '(magit-status :which-key "status")
+
+   ;; Window 
+   "w" '(:ignore t :which-key "window")
+   "ws" '(split-window-below :which-key "horizontal-split")
+   "wv" '(split-window-right :which-key "vertical-split")
+   "wl" '(windmove-right :which-key "select-right")
+   "wh" '(windmove-left :which-key "select-left")
+   "wj" '(windmove-down :which-key "select-down")
+   "wk" '(windmove-up :which-key "select-up")
+   "wd" '(delete-window :which-key "delete")
+
+   ;; Org-Mode
+   "o" '(:ignore t :which-key "org")
+   "oa" '(org-agenda :which-key "agenda")
+   "oi" '(:ignore t :which-key "insert")
+   "om" '(hydra-org-move/body :which-key "move subtree")
+   "oih" '(org-insert-heading :which-key "insert-heading")
+   "ois" '(org-insert-subheading :which-key "insert-subheading")
+   "oc" '(org-capture :which-key "capture")
   ))
 
 
@@ -179,6 +199,14 @@
   ("j" text-scale-increase "in")
   ("k" text-scale-increase "out")
   ("f" nil "finished" :exit t))
+
+(defhydra hydra-org-move (:timeout 4)
+  "move org subtree"
+  ("j" org-move-subtree-down "down")
+  ("k" org-move-subtree-up "up")
+  ("h" org-promote-subtree "promote")
+  ("l" org-demote-subtree "demote")
+  )
 
 ;; Be Evil!
 (use-package evil
@@ -288,6 +316,10 @@
   :hook (org-mode . org-superstar-mode)
   :config
   (setq org-superstar-leading-bullet ?\s))
+
+(use-package org-super-agenda
+  :after org
+  :hook (org-mode . org-super-agenda-mode))
 
 ;; Org-Mode!
 (use-package org
