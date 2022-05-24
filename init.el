@@ -329,7 +329,145 @@
   (setq org-hide-leading-stars nil)
   (org-font-setup)
   (org-visual-config)
+  (setq org-directory "~/jhu-org/")
 
+  (setq org-agenda-files (directory-files-recursively "~/jhu-org/" "\\.org$"))
+
+  ;; Record a CLOSED tag and date/time when moving to completed state (done or cancelled)
+  (setq org-log-done t)
+  ;; Log closed TODOs with a note and timestamp
+  (setq org-log-done 'note)
+  ;; Log todo state changes in drawer of todo
+  (setq org-log-into-drawer t)
+  ;; Set Org Keywords
+  (setq org-todo-keywords
+        '((sequence "TODO(t)" "WAIT(w@/!)" "BLOCK(b@/!)" "|" "DONE(d@!)" "CANCELED(c@)")
+          (sequence "RESOURCE(r)" "|")
+          (sequence "ACTIVE(a)" "|" "INACTIVE(i)" "COMPLETED(c)")
+          ))
+  ;; Set tags
+  (setq org-tag-alist
+        '(
+          ("file" . ?f)
+          ("next" . ?n)
+          ("queue" . ?q)
+          ("admin" . ?a)
+          ("meeting" . ?m)
+          ("datavis" . ?v)
+          ("access" . ?c)
+          ("consult" . ?t)
+          ("dev" . ?d)
+          ("icpsr" . ?i)
+          ("deid" . ?e)
+          ("deia" . ?z)
+          ("socsci" . ?s)
+          ("outreach" . ?o)
+          ("workshop" . ?w)
+          ("toread" . ?r)
+          ("code" . ?x)
+          ))
+
+  (setq org-capture-templates
+          '(("t" "Todo" entry (file "~/jhu-org/inbox.org")
+          "* TODO %? %^g\n  %U\n")
+          ("T" "Todo with Clipboard" entry (file "~/jhu-org/inbox.org")
+          "* TODO %? %^g\n  %U\n  %x")
+          ("r" "Resource with Clipboard" entry (file "~/jhu-org/inbox.org")
+          "* RESOURCE %?\n  %U\n  %x")
+          ("c" "Consultation" entry (file "~/jhu-org/consults.org")
+           "* ACTIVE %^{Patron Name}: %^{Short Description of Consult} %t %^g\n** Background\n%x\n** Interactions\n%?\n** TODOs")
+          ("a"               ; key
+          "Article"         ; name
+          entry             ; type
+          (file "~/jhu-org/notes.org" "Article")  ; target
+          "* %^{Title} %(org-set-tags) :article: \n:PROPERTIES:\n:Created: %U\n:Linked: %a\n:END:\n%i\nBrief description:\n%?"  ; template
+          :prepend t        ; properties
+          :empty-lines 1    ; properties
+          :created t        ; properties
+          )
+          ("p" "Project" entry (file "~/jhu-org/projects.org")
+          "* ACTIVE %^{Project Name} [/] %^g \n:PROPERTIES:\n:Description: %^{Brief Description}\n:Created: %U\n:ARCHIVE: %s_archive::* %\\1\n:COOKIE_DATA: todo recursive\n:END:\n%?")
+          ("m" "Meeting" entry (file "~/jhu-org/meetings.org")
+          "* %^{Meeting Title} %^T\n:PROPERTIES:\n:Description: %^{Brief Description of Meeting}\n** Background\n** Meeting Notes\n%?")
+          ("M" "Meeting with Clipboard" entry (file "~/jhu-org/meetings.org")
+          "* %^{Meeting Title} %^T\n:PROPERTIES:\n:Description: %^{Brief Description of Meeting}\n** Background\n%x\n** Meeting Notes\n%?")
+          ("n" "Note" entry (file "~/Documents/jhu-org/inbox.org")
+          "* NOTE %?\n%U" :empty-lines 1)
+          ("N" "Note with Clipboard" entry (file "~/jhu-org/todo.org")
+          "* NOTE %?\n%U\n   %x" :empty-lines 1)
+          ))
+  (setq org-agenda-custom-commands
+        '(
+          ("e" "Exclusively TODOs"
+           ((todo "TODO"
+                  ((org-agenda-overriding-header "TODO")
+                   (org-agenda-skip-function '(org-agenda-skip-entry-if 'todo '("DONE" "INACTIVE" "ACTIVE" "CANCELED" "RESOURCE")))
+                   )))
+           )
+          ("r" "Monthly review"
+           (
+            (tags "consult" ((org-agenda-skip-function '(org-agenda-skip-entry-if 'nottodo '("TODO" "WAIT")))))
+            (tags "next" ((org-agenda-skip-function '(org-agenda-skip-entry-if 'todo '("DONE" "INACTIVE" "ACTIVE" "CANCELED")))
+                          (org-tags-match-list-sublevels 'nil)))
+            (agenda "" ((org-agenda-span 'month)
+                        (org-agenda-todo-list-sublevels 'indented)
+                        (org-agenda-entry-types '(:deadline :scheduled))
+            ))
+           ))
+          ("w" "Weekly review"
+                  agenda ""
+                  ((org-agenda-start-day "-7d")
+                  (org-agenda-span 8)
+                  (org-agenda-start-on-weekday 3)
+                  (org-agenda-start-with-log-mode '(closed))
+                  (org-agenda-archives-mode t)
+                  (org-agenda-skip-function '(org-agenda-skip-entry-if 'nottodo '("DONE" "INACTIVE")))
+                  ))
+          ("p" "Projects"
+           ((todo "TODO|WAIT" (
+                         (org-agenda-files '("~/jhu-org/projects.org"))
+                         (org-super-agenda-groups
+                          '((:auto-parent t
+                            )))))
+            )
+           )
+            ;; '((:auto-category t))))
+  
+          ("d" "Daily Tasks"
+           (
+            (agenda "" ((org-agenda-span 5)
+                        (org-agenda-skip-function '(org-agenda-skip-entry-if 'todo '("DONE" "INACTIVE" "ACTIVE" "CANCELED" "RESOURCE")))
+                       ; (org-agenda-entry-types '(:date :deadline :scheduled))
+                        ))
+            (alltodo "" ((org-agenda-overriding-header "")
+                        (org-agenda-skip-function '(org-agenda-skip-entry-if 'todo '("DONE" "INACTIVE" "ACTIVE" "CANCELED" "RESOURCE")))
+                         (org-super-agenda-groups
+                          '(
+                            (:discard (:todo "RESOURCE"))
+                            (:name "To File in LibAnswers"
+                                   :tag "file"
+                                   :order 2)
+                            (:name "Today's TODOs"
+                                   :tag "next"
+                                   :order 1)
+                            (:name "Due Today"
+                                   :scheduled today
+                                   :deadline today
+                                   :todo "today"
+                                   :order 4)
+                            (:name "Overdue"
+                                   :deadline past
+                                   :order 7)
+                            (:name "Important"
+                                   :priority "A"
+                                   :order 5)
+                            (:name "Queue (What to work on next)"
+                                   :tag "queue"
+                                   :order 10)
+                            (:discard (:anything))))))))
+  
+          ))
+ 
   ;; Ensure org files saved after a refile
   (advice-add 'org-refile :after 'org-save-all-org-buffers)
   )
