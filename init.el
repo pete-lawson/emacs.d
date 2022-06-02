@@ -23,6 +23,27 @@
 (tool-bar-mode -1)       ; Disable toolbar
 (menu-bar-mode -1)       ; Disable menu bar
  
+;; Package Manager
+;; ------------------------
+(require 'package)
+
+;; set package sources
+(setq package-archives '(("melpa" . "https://melpa.org/packages/")
+			 ("org"   . "https://orgmode.org/elpa/")
+			 ("elpa"  . "https://elpa.gnu.org/packages/")))
+
+;; Ensure package archives are downloaded
+(package-initialize)
+(unless package-archive-contents
+  (package-refresh-contents))
+
+;; Install packages if they are not already installed
+(unless (package-installed-p 'use-package)
+  (package-install 'use-package))
+
+(require 'use-package)
+(setq use-package-always-ensure t)
+
 ;; Theme
 
 ;; Use Doom Theme (with Doom modeline)
@@ -74,27 +95,6 @@
   :init (setq which-key-idle-delay .001)
   (which-key-mode)
   :diminish which-key-mode)
-
-;; Package Manager
-;; ------------------------
-(require 'package)
-
-;; set package sources
-(setq package-archives '(("melpa" . "https://melpa.org/packages/")
-			 ("org"   . "https://orgmode.org/elpa/")
-			 ("elpa"  . "https://elpa.gnu.org/packages/")))
-
-;; Ensure package archives are downloaded
-(package-initialize)
-(unless package-archive-contents
-  (package-refresh-contents))
-
-;; Install packages if they are not already installed
-(unless (package-installed-p 'use-package)
-  (package-install 'use-package))
-
-(require 'use-package)
-(setq use-package-always-ensure t)
 
 ;; Quit prompts with ESC
 (global-set-key (kbd "<escape>") 'keyboard-escape-quit)
