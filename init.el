@@ -12,12 +12,6 @@
 ;; Font 
 (set-face-attribute 'default nil :font "Fira Code Retina" :height 140)
 
-;; Set the fixed pitch face
-(set-face-attribute 'fixed-pitch nil :font "Fira Code Retina" :height 160)
-
-;; Set the variable pitch face
-(set-face-attribute 'variable-pitch nil :font "ETBembo" :height 180 :weight 'regular :width 'ultra-expanded)
-
 ;; Interface
 (scroll-bar-mode -1)     ; Disable visible scrollbar
 (tool-bar-mode -1)       ; Disable toolbar
@@ -276,30 +270,7 @@
 ;; General org-mode config
 (defun org-mode-setup ()
   (visual-line-mode 1)
-  (variable-pitch-mode 1))
-
-;; Configure org-mode font
-(defun org-font-setup ()
-
-  ;; Set faces for heading levels
-  (dolist (face '((org-level-1 . 1.3)
-                  (org-level-2 . 1.2)
-                  (org-level-3 . 1.1)
-                  (org-level-4 . 1.1)
-                  (org-level-5 . 1.1)
-                  (org-level-6 . 1.1)
-                  (org-level-7 . 1.1)
-                  (org-level-8 . 1.1)))
-    (set-face-attribute (car face) nil :font "ETBembo" :weight 'regular :height (cdr face)))
-
-  ;; Ensure that anything that should be fixed-pitch in Org files appears that way
-  (set-face-attribute 'org-block nil :foreground nil :inherit '(shadow fixed-pitch))
-  (set-face-attribute 'org-code nil   :inherit '(shadow fixed-pitch))
-  (set-face-attribute 'org-table nil   :inherit '(shadow fixed-pitch))
-  (set-face-attribute 'org-verbatim nil :inherit '(shadow fixed-pitch))
-  (set-face-attribute 'org-special-keyword nil :inherit '(font-lock-comment-face fixed-pitch))
-  (set-face-attribute 'org-meta-line nil :inherit '(font-lock-comment-face fixed-pitch))
-  (set-face-attribute 'org-checkbox nil :inherit 'fixed-pitch))
+  (setq org-startup-indented t))
 
 ;; Configure org-mode visual mode 
 (defun org-visual-config ()
@@ -327,9 +298,10 @@
   :config
   (setq org-ellipsis "  ▼")
   (setq org-hide-leading-stars nil)
-  (org-font-setup)
   (org-visual-config)
   (setq org-directory "~/jhu-org/")
+  ;; Hide bold, italics, etc markers 
+  (setq org-hide-emphasis-markers t)
 
   (setq org-agenda-files (directory-files-recursively "~/jhu-org/" "\\.org$"))
 
