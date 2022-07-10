@@ -254,7 +254,13 @@
 (setq custom-file (concat user-emacs-directory "/custom.el"))
 
 ;; Use magit for VC
-(use-package magit)
+(use-package magit
+  :config
+  ;; Display magit as full screen buffer
+  (setq magit-post-display-buffer-hook
+      #'(lambda ()
+	  (when (derived-mode-p 'magit-status-mode)
+		(delete-other-windows)))))
 
 ;; Recent File Finder
 (use-package recentf
