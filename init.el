@@ -10,7 +10,7 @@
 ;; -----------------------
 
 ;; Font 
-(set-face-attribute 'default nil :font "Fira Code Retina" :height 140)
+(set-face-attribute 'default nil :font "Fira Code Retina" :height 150)
 
 ;; Interface
 (scroll-bar-mode -1)     ; Disable visible scrollbar
