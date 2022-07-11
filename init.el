@@ -276,8 +276,6 @@
 ;; General org-mode config
 (defun org-mode-setup ()
   (visual-line-mode 1)
-  (setq org-agenda-window-setup 'only-window)
-  (setq org-agenda-restore-windows-after-quit t))
 
 ;; Configure org-mode visual mode 
 (defun org-visual-config ()
@@ -304,6 +302,7 @@
   :hook (org-mode . org-mode-setup)
   :config
   (setq org-startup-indented t)
+  (setq org-agenda-window-setup 'only-window)
   (setq org-ellipsis "  ▼")
   (setq org-hide-leading-stars nil)
   (org-visual-config)
