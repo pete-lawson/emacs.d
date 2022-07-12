@@ -9,16 +9,11 @@
 ;; aesthetics
 ;; -----------------------
 
-;; Font 
-(set-face-attribute 'default nil :font "Fira Code Retina" :height 150)
-
-;; Interface
-(scroll-bar-mode -1)     ; Disable visible scrollbar
-(tool-bar-mode -1)       ; Disable toolbar
-(menu-bar-mode -1)       ; Disable menu bar
-
-;; System dependent configuration
+;; System specific config
 (setq-default sysTypeSpecific  system-type) ;; get the system-type value
+
+;; Font 
+(set-face-attribute 'default nil :font "Fira Code Retina" :height 160)
 
 (cond
 ;; If type is "gnu/linux", override to "wsl/linux" if it's WSL.
@@ -34,7 +29,17 @@
     browse-url-generic-program  cmdExeBin
     browse-url-generic-args     cmdExeArgs
     browse-url-browser-function 'browse-url-generic)
-    )))
+    )
+    ;; Font 
+    (set-face-attribute 'default nil :font "Fira Code Retina" :height 130)
+))
+
+
+;; Interface
+(scroll-bar-mode -1)     ; Disable visible scrollbar
+(tool-bar-mode -1)       ; Disable toolbar
+(menu-bar-mode -1)       ; Disable menu bar
+
 
 ;; Package Manager
 ;; ------------------------
@@ -294,7 +299,7 @@
 
 ;; General org-mode config
 (defun org-mode-setup ()
-  (visual-line-mode 1)
+  (visual-line-mode 1))
 
 ;; Configure org-mode visual mode 
 (defun org-visual-config ()
