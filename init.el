@@ -16,7 +16,26 @@
 (scroll-bar-mode -1)     ; Disable visible scrollbar
 (tool-bar-mode -1)       ; Disable toolbar
 (menu-bar-mode -1)       ; Disable menu bar
- 
+
+;; System dependent configuration
+(setq-default sysTypeSpecific  system-type) ;; get the system-type value
+
+(cond
+;; If type is "gnu/linux", override to "wsl/linux" if it's WSL.
+((eq sysTypeSpecific 'gnu/linux)
+(when (string-match "Linux.*Microsoft.*Linux"
+		    (shell-command-to-string "uname -a"))
+
+    (setq-default sysTypeSpecific "wsl/linux") ;; for later use.
+    (setq
+    cmdExeBin"/mnt/c/Windows/System32/cmd.exe"
+    cmdExeArgs '("/c" "start" "") )
+    (setq
+    browse-url-generic-program  cmdExeBin
+    browse-url-generic-args     cmdExeArgs
+    browse-url-browser-function 'browse-url-generic)
+    )))
+
 ;; Package Manager
 ;; ------------------------
 (require 'package)
