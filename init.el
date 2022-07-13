@@ -88,7 +88,11 @@
 
 (use-package doom-modeline
   :ensure t
-  :init (doom-modeline-mode 1))
+  :init (doom-modeline-mode 1)
+  :config
+  ;; Fix doom-modeline not auto-adjusting height to content
+  (advice-add #'fit-window-to-buffer :before (lambda (&rest _) (redisplay t)))
+  )
 
 ;; Set Transparency
 (set-frame-parameter (selected-frame) 'alpha '(98 98))
@@ -311,6 +315,11 @@
 (use-package visual-fill-column
   :hook (org-mode . org-visual-config))
 
+(use-package org-jira
+  :after org
+  :config
+  (setq jiralib-url "https://jhulibraries.atlassian.net"))
+
 (use-package org-superstar
   :after org
   :hook (org-mode . org-superstar-mode)
@@ -353,6 +362,7 @@
         '(
           ("file" . ?f)
           ("next" . ?n)
+          ("jira" . ?j)
           ("queue" . ?q)
           ("admin" . ?a)
           ("meeting" . ?m)
