@@ -343,11 +343,6 @@
   (setq org-directory "~/jhu-org/")
   ;; Hide bold, italics, etc markers 
   (setq org-hide-emphasis-markers t) 
-  (setq org-agenda-sorting-strategy
-     '((agenda category-keep)
-     (todo category-keep)
-     (tags category-keep)
-     (search category-keep)))
   (setq org-agenda-files (directory-files-recursively "~/jhu-org/" "\\.org$"))
   ;; Org-refile set depth of agendas
   (setq org-outline-path-complete-in-steps t)
