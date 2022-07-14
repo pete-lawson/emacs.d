@@ -342,8 +342,12 @@
   (org-visual-config)
   (setq org-directory "~/jhu-org/")
   ;; Hide bold, italics, etc markers 
-  (setq org-hide-emphasis-markers t)
-
+  (setq org-hide-emphasis-markers t) 
+  (setq org-agenda-sorting-strategy
+     '((agenda category-keep)
+     (todo category-keep)
+     (tags category-keep)
+     (search category-keep)))
   (setq org-agenda-files (directory-files-recursively "~/jhu-org/" "\\.org$"))
   ;; Org-refile set depth of agendas
   (setq org-outline-path-complete-in-steps t)
@@ -447,10 +451,10 @@
            ((todo "TODO|WAIT" (
                          (org-agenda-files '("~/jhu-org/projects.org"))
                          (org-super-agenda-groups
-                          '((:auto-parent t
-                            )))))
+                          '((:auto-outline-path t)))))
             )
            )
+
             ;; '((:auto-category t))))
   
           ("d" "Daily Tasks"
@@ -470,6 +474,9 @@
                             (:name "Today's TODOs"
                                    :tag "next"
                                    :order 1)
+                            (:name "Consults"
+                                   :tag "consult"
+                                   :order 3)
                             (:name "Due Today"
                                    :scheduled today
                                    :deadline today
