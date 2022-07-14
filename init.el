@@ -311,11 +311,6 @@
 (use-package visual-fill-column
   :hook (org-mode . org-visual-config))
 
-(use-package org-jira
-  :after org
-  :config
-  (setq jiralib-url "https://jhulibraries.atlassian.net"))
-
 (use-package org-superstar
   :after org
   :hook (org-mode . org-superstar-mode)
