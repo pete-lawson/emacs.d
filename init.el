@@ -206,6 +206,7 @@
    "o" '(:ignore t :which-key "org")
    "oa" '(org-agenda :which-key "agenda")
    "oi" '(:ignore t :which-key "insert")
+   "or" '(org-refile :which-key "refile")
    "om" '(hydra-org-move/body :which-key "move subtree")
    "oih" '(org-insert-heading :which-key "insert-heading")
    "ois" '(org-insert-subheading :which-key "insert-subheading")
@@ -344,7 +345,13 @@
   (setq org-hide-emphasis-markers t)
 
   (setq org-agenda-files (directory-files-recursively "~/jhu-org/" "\\.org$"))
-
+  ;; Org-refile set depth of agendas
+  (setq org-outline-path-complete-in-steps t)
+  (setq org-refile-targets '((nil :maxlevel . 1)
+ 				 (org-agenda-files :maxlevel . 6)))
+  ;; Refile to specific org file with heading path
+  (setq org-refile-use-outline-path 'file)
+  (setq org-outline-path-complete-in-steps nil)         ; Refile in a single go
   ;; Record a CLOSED tag and date/time when moving to completed state (done or cancelled)
   (setq org-log-done t)
   ;; Log closed TODOs with a note and timestamp
