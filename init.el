@@ -459,9 +459,6 @@
                             (:name "Today's TODOs"
                                    :tag "next"
                                    :order 1)
-                            (:name "Consults"
-                                   :tag "consult"
-                                   :order 3)
                             (:name "Due Today"
                                    :scheduled today
                                    :deadline today
