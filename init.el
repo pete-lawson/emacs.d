@@ -202,6 +202,7 @@
    "oa" '(org-agenda :which-key "agenda")
    "oi" '(:ignore t :which-key "insert")
    "or" '(org-refile :which-key "refile")
+   "op" '(org-pomodoro :which-key "pomodoro")
    "om" '(hydra-org-move/body :which-key "move subtree")
    "oih" '(org-insert-heading :which-key "insert-heading")
    "ois" '(org-insert-subheading :which-key "insert-subheading")
@@ -320,6 +321,13 @@
 (use-package org-super-agenda
   :after org
   :hook (org-mode . org-super-agenda-mode))
+
+(use-package org-pomodoro
+  :after org
+  :config
+  (setq
+   user-alert-configuration (quote ((((:category . "org-pomodoro")) libnotify nil)))
+  ))
 
 ;; Org-Mode!
 (use-package org
@@ -449,13 +457,13 @@
                        ; (org-agenda-entry-types '(:date :deadline :scheduled))
                         ))
             (alltodo "" ((org-agenda-overriding-header "")
-                        (org-agenda-skip-function '(org-agenda-skip-entry-if 'todo '("DONE" "INACTIVE" "ACTIVE" "CANCELED" "RESOURCE")))
+                        (org-agenda-skip-function '(org-agenda-skip-entry-if 'todo '("DONE" "INACTIVE" "CANCELED" "RESOURCE")))
                          (org-super-agenda-groups
                           '(
                             (:discard (:todo "RESOURCE"))
                             (:name "To File in LibAnswers"
                                    :tag "file"
-                                   :order 2)
+                                   :order 10)
                             (:name "Today's TODOs"
                                    :tag "next"
                                    :order 1)
@@ -464,6 +472,7 @@
                                    :deadline today
                                    :todo "today"
                                    :order 4)
+                            (:discard (:todo "ACTIVE"))
                             (:name "Overdue"
                                    :deadline past
                                    :order 7)
@@ -472,7 +481,7 @@
                                    :order 5)
                             (:name "Queue (What to work on next)"
                                    :tag "queue"
-                                   :order 10)
+                                   :order 2)
                             (:discard (:anything))))))))
   
           ))
