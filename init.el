@@ -207,6 +207,9 @@
    "oih" '(org-insert-heading :which-key "insert-heading")
    "ois" '(org-insert-subheading :which-key "insert-subheading")
    "oc" '(org-capture :which-key "capture")
+
+   ;; Org-capture
+   "c" '(org-capture :which-key "org-capture")
   ))
 
 
@@ -360,6 +363,7 @@
         '((sequence "TODO(t)" "WAIT(w@/!)" "BLOCK(b@/!)" "|" "DONE(d@!)" "CANCELED(c@)")
           (sequence "RESOURCE(r)" "|")
           (sequence "ACTIVE(a)" "|" "INACTIVE(i)" "COMPLETED(c)")
+          (sequence "CONSULT(c)" "|" "FILED(f)")
           ))
   ;; Set tags
   (setq org-tag-alist
@@ -385,13 +389,16 @@
           ))
 
   (setq org-capture-templates
-          '(("t" "Todo" entry (file "~/jhu-org/inbox.org")
+        '(
+	  ("t" "TODO")
+	  ("tt" "Todo" entry (file "~/jhu-org/inbox.org")
           "* TODO %? %^g\n  %U\n")
-          ("T" "Todo with Clipboard" entry (file "~/jhu-org/inbox.org")
+          ("tT" "Todo with Clipboard" entry (file "~/jhu-org/inbox.org")
           "* TODO %? %^g\n  %U\n  %x")
           ("r" "Resource with Clipboard" entry (file "~/jhu-org/inbox.org")
           "* RESOURCE %?\n  %U\n  %x")
-          ("c" "Consultation" entry (file "~/jhu-org/consults.org")
+	  ("c" "Consultations")
+          ("cn" "New Consultation" entry (file "~/jhu-org/consults.org")
            "* ACTIVE %^{Patron Name}: %^{Short Description of Consult} %t %^g\n** Background\n%x\n** Interactions\n%?\n** TODOs")
           ("a"               ; key
           "Article"         ; name
@@ -404,13 +411,15 @@
           )
           ("p" "Project" entry (file "~/jhu-org/projects.org")
           "* ACTIVE %^{Project Name} [/] %^g \n:PROPERTIES:\n:Description: %^{Brief Description}\n:Created: %U\n:ARCHIVE: %s_archive::* %\\1\n:COOKIE_DATA: todo recursive\n:END:\n%?")
-          ("m" "Meeting" entry (file "~/jhu-org/meetings.org")
+	  ("m" "Meetings")
+          ("mm" "Meeting" entry (file "~/jhu-org/meetings.org")
           "* %^{Meeting Title} %^T\n:PROPERTIES:\n:Description: %^{Brief Description of Meeting}\n** Background\n** Meeting Notes\n%?")
-          ("M" "Meeting with Clipboard" entry (file "~/jhu-org/meetings.org")
+          ("mM" "Meeting with Clipboard" entry (file "~/jhu-org/meetings.org")
           "* %^{Meeting Title} %^T\n:PROPERTIES:\n:Description: %^{Brief Description of Meeting}\n** Background\n%x\n** Meeting Notes\n%?")
-          ("n" "Note" entry (file "~/Documents/jhu-org/inbox.org")
+	  ("n" "Note")
+          ("nn" "Note" entry (file "~/Documents/jhu-org/inbox.org")
           "* NOTE %?\n%U" :empty-lines 1)
-          ("N" "Note with Clipboard" entry (file "~/jhu-org/todo.org")
+          ("nN" "Note with Clipboard" entry (file "~/jhu-org/todo.org")
           "* NOTE %?\n%U\n   %x" :empty-lines 1)
           ))
   (setq org-agenda-custom-commands
