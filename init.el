@@ -390,7 +390,7 @@
 
   (setq org-capture-templates
         '(
-	  ("t" "TODO")
+	  ("t" "Task")
 	  ("tt" "Todo" entry (file "~/jhu-org/inbox.org")
           "* TODO %? %^g\n  %U\n")
           ("tT" "Todo with Clipboard" entry (file "~/jhu-org/inbox.org")
@@ -400,6 +400,18 @@
 	  ("c" "Consultations")
           ("cn" "New Consultation" entry (file "~/jhu-org/consults.org")
            "* ACTIVE %^{Patron Name}: %^{Short Description of Consult} %t %^g\n** Background\n%x\n** Interactions\n%?\n** TODOs")
+          ("cz" "Zoom Consult" entry (file "~/jhu-org/consults.org")
+           "* Zoom Consult w/ %^{Patron Name}: %^{short description} %t :file:%^g\n
+            %?")
+          ("cZ" "Zoom Consult w/ Clipboard" entry (file "~/jhu-org/consults.org")
+           "* Zoom Consult w/ %^{Patron Name}: %^{short description} %t :file:%^g\n
+            %x%?")
+          ("ce" "Email Consult" entry (file "~/jhu-org/consults.org")
+           "* Email Consult w/ %^{Patron Name}: %^{short description} %t :file:%^g\n
+            %?")
+          ("cE" "Email Consult w/ Clipboard" entry (file "~/jhu-org/consults.org")
+           "* Email Consult w/ %^{Patron Name}: %^{short description} %t :file:%^g\n
+            %x%?")
           ("a"               ; key
           "Article"         ; name
           entry             ; type
