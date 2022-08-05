@@ -59,6 +59,8 @@
 
 ;; Theme
 
+;; Icon dependency for doom-modeline and neotree
+(use-package all-the-icons)
 ;; Use Doom Theme (with Doom modeline)
 
 (use-package doom-themes
@@ -87,6 +89,15 @@
   :config
   ;; Fix doom-modeline not auto-adjusting height to content
   (advice-add #'fit-window-to-buffer :before (lambda (&rest _) (redisplay t)))
+  ;; Set minimum window width 
+  (setq doom-modeline-window-width-limit 10)
+  ;; Don't show text encoding (to save visual space)
+  (setq doom-modeline-buffer-encoding nil)
+  ;; Define your custom doom-modeline
+  (with-eval-after-load "doom-modeline"
+    (doom-modeline-def-modeline 'main
+    '(bar workspace-name window-number modals matches buffer-info remote-host parrot misc-info)
+    '(selection-info buffer-position word-count objed-state persp-name battery grip irc mu4e gnus github debug lsp minor-modes input-method indent-info buffer-encoding major-mode process vcs checker)))
   )
 
 ;; Set Transparency
@@ -330,7 +341,9 @@
   :config
   (setq
    user-alert-configuration (quote ((((:category . "org-pomodoro")) libnotify nil)))
-  ))
+   )
+  (setq org-pomodoro-format "%s")
+  )
 
 ;; Org-Mode!
 (use-package org
@@ -358,6 +371,12 @@
   (setq org-log-done 'note)
   ;; Log todo state changes in drawer of todo
   (setq org-log-into-drawer t)
+  ;; Truncate long org-clock tasks so they fit in mode-line
+  (setq org-clock-heading-function
+	(lambda ()
+	  (let ((str (nth 4 (org-heading-components))))
+	    (if (> (length str) 20)
+		(substring str 0 20)))))
   ;; Set Org Keywords
   (setq org-todo-keywords
         '((sequence "TODO(t)" "WAIT(w@/!)" "BLOCK(b@/!)" "|" "DONE(d@!)" "CANCELED(c@)")
