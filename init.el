@@ -395,10 +395,8 @@
           "* TODO %? %^g\n  %U\n")
           ("tT" "Todo with Clipboard" entry (file "~/jhu-org/inbox.org")
           "* TODO %? %^g\n  %U\n  %x")
-          ("r" "Resource with Clipboard" entry (file "~/jhu-org/inbox.org")
-          "* RESOURCE %?\n  %U\n  %x")
 	  ("c" "Consultations")
-          ("cn" "New Consultation" entry (file "~/jhu-org/consults.org")
+          ("cn" "New Consult" entry (file "~/jhu-org/consults.org")
            "* ACTIVE %^{Patron Name}: %^{Short Description of Consult} %t %^g\n** Background\n%x\n** Interactions\n%?\n** TODOs")
           ("cz" "Zoom Consult" entry (file "~/jhu-org/consults.org")
            "* Zoom Consult w/ %^{Patron Name}: %^{short description} %t :file:%^g\n
@@ -412,6 +410,13 @@
           ("cE" "Email Consult w/ Clipboard" entry (file "~/jhu-org/consults.org")
            "* Email Consult w/ %^{Patron Name}: %^{short description} %t :file:%^g\n
             %x%?")
+          ("r" "Resource with Clipboard" entry (file "~/jhu-org/inbox.org")
+          "* RESOURCE %?\n  %U\n  %x")
+	  ("m" "Meetings")
+          ("mm" "Meeting" entry (file "~/jhu-org/meetings.org")
+          "* %^{Meeting Title} %^T\n:PROPERTIES:\n:Description: %^{Brief Description of Meeting}\n** Background\n** Meeting Notes\n%?")
+          ("mM" "Meeting with Clipboard" entry (file "~/jhu-org/meetings.org")
+          "* %^{Meeting Title} %^T\n:PROPERTIES:\n:Description: %^{Brief Description of Meeting}\n** Background\n%x\n** Meeting Notes\n%?")
           ("a"               ; key
           "Article"         ; name
           entry             ; type
@@ -423,11 +428,6 @@
           )
           ("p" "Project" entry (file "~/jhu-org/projects.org")
           "* ACTIVE %^{Project Name} [/] %^g \n:PROPERTIES:\n:Description: %^{Brief Description}\n:Created: %U\n:ARCHIVE: %s_archive::* %\\1\n:COOKIE_DATA: todo recursive\n:END:\n%?")
-	  ("m" "Meetings")
-          ("mm" "Meeting" entry (file "~/jhu-org/meetings.org")
-          "* %^{Meeting Title} %^T\n:PROPERTIES:\n:Description: %^{Brief Description of Meeting}\n** Background\n** Meeting Notes\n%?")
-          ("mM" "Meeting with Clipboard" entry (file "~/jhu-org/meetings.org")
-          "* %^{Meeting Title} %^T\n:PROPERTIES:\n:Description: %^{Brief Description of Meeting}\n** Background\n%x\n** Meeting Notes\n%?")
 	  ("n" "Note")
           ("nn" "Note" entry (file "~/Documents/jhu-org/inbox.org")
           "* NOTE %?\n%U" :empty-lines 1)
