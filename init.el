@@ -6,7 +6,7 @@
 
 (setq inhibit-startup-message t)
 
-;; aesthetics
+;; Aesthetics
 ;; -----------------------
 
 ;; System specific config
@@ -15,22 +15,24 @@
 ;; Font 
 (set-face-attribute 'default nil :font "Fira Code Retina" :height 160)
 
-;; If type is "gnu/linux", override to "wsl/linux" if it's WSL.
+;; If type is "wsl/linux", then set font smaller (retina scaling) and
+;; set cmd.exe path so that links open natively in Windows.
 (when (and (eq system-type 'gnu/linux)
            (getenv "WSLENV"))
   (set-face-attribute 'default nil :font "Fira Code Retina" :height 130)
-    (setq-default sysTypeSpecific "wsl/linux") ;; for later use.
-    (setq
-    cmdExeBin"/mnt/c/Windows/System32/cmd.exe"
-    cmdExeArgs '("/c" "start" "") )
-    (setq
-    browse-url-generic-program  cmdExeBin
-    browse-url-generic-args     cmdExeArgs
-    browse-url-browser-function 'browse-url-generic)
-    )
+  (setq-default sysTypeSpecific "wsl/linux") ;; for later use.
+  (setq
+   cmdExeBin"/mnt/c/Windows/System32/cmd.exe"
+   cmdExeArgs '("/c" "start" "") )
+  (setq
+   browse-url-generic-program  cmdExeBin
+   browse-url-generic-args     cmdExeArgs
+   browse-url-browser-function 'browse-url-generic)
+  )
 
 
 ;; Interface
+;; ------------------------
 (scroll-bar-mode -1)     ; Disable visible scrollbar
 (tool-bar-mode -1)       ; Disable toolbar
 (menu-bar-mode -1)       ; Disable menu bar
@@ -215,8 +217,8 @@
    "or" '(org-refile :which-key "refile")
    "op" '(org-pomodoro :which-key "pomodoro")
    "om" '(hydra-org-move/body :which-key "move subtree")
-   "oih" '(org-insert-heading :which-key "insert-heading")
-   "ois" '(org-insert-subheading :which-key "insert-subheading")
+   "oh" '(org-insert-heading :which-key "insert-heading")
+   "os" '(org-insert-subheading :which-key "insert-subheading")
    "oc" '(org-capture :which-key "capture")
 
    ;; Org-capture
