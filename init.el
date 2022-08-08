@@ -223,6 +223,11 @@
 
    ;; Org-capture
    "c" '(org-capture :which-key "org-capture")
+
+   ;; Avy
+   "a" '(:ignore t :which-key "avy")
+   "ac" '(avy-goto-char :whichkey "go to char")
+   "ax" '(avy-goto-char-2 :whichkey "go to char 2")
   ))
 
 
@@ -363,7 +368,7 @@
   ;; Org-refile set depth of agendas
   (setq org-outline-path-complete-in-steps t)
   (setq org-refile-targets '((nil :maxlevel . 1)
- 				 (org-agenda-files :maxlevel . 6)))
+ 			     (org-agenda-files :maxlevel . 6)))
   ;; Refile to specific org file with heading path
   (setq org-refile-use-outline-path 'file)
   (setq org-outline-path-complete-in-steps nil)         ; Refile in a single go
@@ -381,11 +386,25 @@
 		(substring str 0 20)))))
   ;; Set Org Keywords
   (setq org-todo-keywords
-        '((sequence "TODO(t)" "WAIT(w@/!)" "BLOCK(b@/!)" "|" "DONE(d@!)" "CANCELED(c@)")
+        '((sequence "TODO(t)" "IN-PROGRESS(p)" "WAIT(w@/!)" "BLOCK(b@/!)" "|" "DONE(d@!)" "CANCELED(c@)")
           (sequence "RESOURCE(r)" "|")
           (sequence "ACTIVE(a)" "|" "INACTIVE(i)" "COMPLETED(c)")
-          (sequence "CONSULT(c)" "|" "FILED(f)")
+          (sequence "TRANS-ZOOM(z)" "TRANS-EMAIL(e)" "|" "TRANS-FILED(f)")
           ))
+  ;; Color those keywords
+  (setq org-todo-keyword-faces
+	'(("TODO" . (:foreground "DarkOliveGreen1" :weight bold))
+          ("IN-PROGRESS" . (:foreground "goldenrod1" :weight bold))
+          ("WAIT" . (:foreground "goldenrod1" :weight bold))
+          ("BLOCK" . (:foreground "salmon1" :weight bold))
+          ("BLOCK" . (:foreground "goldenrod1" :weight bold))
+          ("RESOURCE" . (:foreground "maroon" :weight bold))
+          ("CANCELED" . (:foreground "blue" :weight bold))
+          ("TRANS-ZOOM" . (:foreground "SpringGreen1" :weight bold))
+          ("TRANS-EMAIL" . (:foreground "MediumPurple2" :weight bold))
+          ("TRANS-FILED" . (:foreground "MediumPurple4" :weight bold))
+	  ))
+
   ;; Set tags
   (setq org-tag-alist
         '(
@@ -413,54 +432,54 @@
         '(
 	  ("t" "Task")
 	  ("tt" "Todo" entry (file "~/jhu-org/inbox.org")
-          "* TODO %? %^g\n  %U\n")
+           "* TODO %? %^g\n  %U\n")
           ("tT" "Todo with Clipboard" entry (file "~/jhu-org/inbox.org")
-          "* TODO %? %^g\n  %U\n  %x")
+           "* TODO %? %^g\n  %U\n  %x")
 	  ("c" "Consultations")
           ("cn" "New Consult" entry (file "~/jhu-org/consults.org")
            "* ACTIVE %^{Patron Name}: %^{Short Description of Consult} %t %^g\n** Background\n%x\n** Interactions\n%?\n** TODOs")
           ("cz" "Zoom Consult" entry (file "~/jhu-org/consults.org")
-           "* Zoom Consult w/ %^{Patron Name}: %^{short description} %t :file:%^g\n
+           "* TRANS-ZOOM Zoom Consult w/ %^{Patron Name}: %^{short description} %^t :file:%^g\n
             %?")
           ("cZ" "Zoom Consult w/ Clipboard" entry (file "~/jhu-org/consults.org")
-           "* Zoom Consult w/ %^{Patron Name}: %^{short description} %t :file:%^g\n
+           "* TRANS-ZOOM Zoom Consult w/ %^{Patron Name}: %^{short description} %^t :zoom:file:%^g\n
             %x%?")
           ("ce" "Email Consult" entry (file "~/jhu-org/consults.org")
-           "* Email Consult w/ %^{Patron Name}: %^{short description} %t :file:%^g\n
+           "* TRANS-EMAIL Email Consult w/ %^{Patron Name}: %^{short description} %t :file:%^g\n
             %?")
           ("cE" "Email Consult w/ Clipboard" entry (file "~/jhu-org/consults.org")
-           "* Email Consult w/ %^{Patron Name}: %^{short description} %t :file:%^g\n
+           "* TRANS-EMAIL Email Consult w/ %^{Patron Name}: %^{short description} %t :file:%^g\n
             %x%?")
           ("r" "Resource with Clipboard" entry (file "~/jhu-org/inbox.org")
-          "* RESOURCE %?\n  %U\n  %x")
+           "* RESOURCE %?\n  %U\n  %x")
 	  ("m" "Meetings")
           ("mm" "Meeting" entry (file "~/jhu-org/meetings.org")
-          "* %^{Meeting Title} %^T\n:PROPERTIES:\n:Description: %^{Brief Description of Meeting}\n** Background\n** Meeting Notes\n%?")
+           "* %^{Meeting Title} %^T\n:PROPERTIES:\n:Description: %^{Brief Description of Meeting}\n** Background\n** Meeting Notes\n%?")
           ("mM" "Meeting with Clipboard" entry (file "~/jhu-org/meetings.org")
-          "* %^{Meeting Title} %^T\n:PROPERTIES:\n:Description: %^{Brief Description of Meeting}\n** Background\n%x\n** Meeting Notes\n%?")
+           "* %^{Meeting Title} %^T\n:PROPERTIES:\n:Description: %^{Brief Description of Meeting}\n** Background\n%x\n** Meeting Notes\n%?")
           ("a"               ; key
-          "Article"         ; name
-          entry             ; type
-          (file "~/jhu-org/notes.org" "Article")  ; target
-          "* %^{Title} %(org-set-tags) :article: \n:PROPERTIES:\n:Created: %U\n:Linked: %a\n:END:\n%i\nBrief description:\n%?"  ; template
-          :prepend t        ; properties
-          :empty-lines 1    ; properties
-          :created t        ; properties
-          )
+           "Article"         ; name
+           entry             ; type
+           (file "~/jhu-org/notes.org" "Article")  ; target
+           "* %^{Title} %(org-set-tags) :article: \n:PROPERTIES:\n:Created: %U\n:Linked: %a\n:END:\n%i\nBrief description:\n%?"  ; template
+           :prepend t        ; properties
+           :empty-lines 1    ; properties
+           :created t        ; properties
+           )
           ("p" "Project" entry (file "~/jhu-org/projects.org")
-          "* ACTIVE %^{Project Name} [/] %^g \n:PROPERTIES:\n:Description: %^{Brief Description}\n:Created: %U\n:ARCHIVE: %s_archive::* %\\1\n:COOKIE_DATA: todo recursive\n:END:\n%?")
+           "* ACTIVE %^{Project Name} [/] %^g \n:PROPERTIES:\n:Description: %^{Brief Description}\n:Created: %U\n:ARCHIVE: %s_archive::* %\\1\n:COOKIE_DATA: todo recursive\n:END:\n%?")
 	  ("n" "Note")
           ("nn" "Note" entry (file "~/Documents/jhu-org/inbox.org")
-          "* NOTE %?\n%U" :empty-lines 1)
+           "* NOTE %?\n%U" :empty-lines 1)
           ("nN" "Note with Clipboard" entry (file "~/jhu-org/todo.org")
-          "* NOTE %?\n%U\n   %x" :empty-lines 1)
+           "* NOTE %?\n%U\n   %x" :empty-lines 1)
           ))
   (setq org-agenda-custom-commands
         '(
           ("e" "Exclusively TODOs"
            ((todo "TODO"
                   ((org-agenda-overriding-header "TODO")
-                   (org-agenda-skip-function '(org-agenda-skip-entry-if 'todo '("DONE" "INACTIVE" "ACTIVE" "CANCELED" "RESOURCE")))
+                   (org-agenda-skip-function '(org-agenda-skip-entry-if 'regexp ":email:" 'todo '("DONE" "INACTIVE" "ACTIVE" "CANCELED" "RESOURCE")))
                    )))
            )
           ("r" "Monthly review"
@@ -471,66 +490,72 @@
             (agenda "" ((org-agenda-span 'month)
                         (org-agenda-todo-list-sublevels 'indented)
                         (org-agenda-entry-types '(:deadline :scheduled))
+			))
             ))
-           ))
           ("w" "Weekly review"
-                  agenda ""
-                  ((org-agenda-start-day "-7d")
-                  (org-agenda-span 8)
-                  (org-agenda-start-on-weekday 3)
-                  (org-agenda-start-with-log-mode '(closed))
-                  (org-agenda-archives-mode t)
-                  (org-agenda-skip-function '(org-agenda-skip-entry-if 'nottodo '("DONE" "INACTIVE")))
-                  ))
+           agenda ""
+           ((org-agenda-start-day "-7d")
+            (org-agenda-span 8)
+            (org-agenda-start-on-weekday 3)
+            (org-agenda-start-with-log-mode '(closed))
+            (org-agenda-archives-mode t)
+            (org-agenda-skip-function '(org-agenda-skip-entry-if 'nottodo '("DONE" "INACTIVE")))
+            ))
           ("p" "Projects"
            ((todo "TODO|WAIT" (
-                         (org-agenda-files '("~/jhu-org/projects.org"))
-                         (org-super-agenda-groups
-                          '((:auto-outline-path t)))))
+                               (org-agenda-files '("~/jhu-org/projects.org"))
+                               (org-super-agenda-groups
+				'((:auto-outline-path t)))))
             )
            )
 
-            ;; '((:auto-category t))))
-  
+          ;; '((:auto-category t))))
+	  
           ("d" "Daily Tasks"
            (
             (agenda "" ((org-agenda-span 5)
-                        (org-agenda-skip-function '(org-agenda-skip-entry-if 'todo '("DONE" "INACTIVE" "ACTIVE" "CANCELED" "RESOURCE")))
-                       ; (org-agenda-entry-types '(:date :deadline :scheduled))
+                        (org-agenda-skip-function '(org-agenda-skip-entry-if 'todo '("TRANS-EMAIL" "DONE" "INACTIVE" "ACTIVE" "CANCELED" "RESOURCE")))
+					; (org-agenda-entry-types '(:date :deadline :scheduled))
                         ))
             (alltodo "" ((org-agenda-overriding-header "")
-                        (org-agenda-skip-function '(org-agenda-skip-entry-if 'todo '("DONE" "INACTIVE" "CANCELED" "RESOURCE")))
+                         (org-agenda-skip-function '(org-agenda-skip-entry-if 'todo '("INACTIVE" "CANCELED")))
                          (org-super-agenda-groups
                           '(
-                            (:discard (:todo "RESOURCE"))
-                            (:name "To File in LibAnswers"
-                                   :tag "file"
-                                   :order 10)
                             (:name "Today's TODOs"
                                    :tag "next"
                                    :order 1)
+                            (:name "Queue (What to work on next)"
+                                   :tag "queue"
+                                   :order 3)
                             (:name "Due Today"
                                    :scheduled today
                                    :deadline today
                                    :todo "today"
                                    :order 4)
+                            (:name "Important"
+                                   :priority "A"
+                                   :order 5)
+                            (:name "To File in LibAnswers"
+                                   :tag "file"
+                                   :order 6)
                             (:discard (:todo "ACTIVE"))
                             (:name "Overdue"
                                    :deadline past
                                    :order 7)
-                            (:name "Important"
-                                   :priority "A"
-                                   :order 5)
-                            (:name "Queue (What to work on next)"
-                                   :tag "queue"
-                                   :order 2)
                             (:discard (:anything))))))))
-  
+	  
           ))
- 
+  
   ;; Ensure org files saved after a refile
   (advice-add 'org-refile :after 'org-save-all-org-buffers)
   )
 
+;; Code
+;; -----------------------
 
+(use-package aggressive-indent
+  :hook (emacs-lisp-mode . aggressive-indent-mode))
+
+;; Navigation
+(use-package avy)
 
