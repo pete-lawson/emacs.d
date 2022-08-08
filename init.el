@@ -1,4 +1,4 @@
-; My Custom Emacs Config
+					; My Custom Emacs Config
 ;;
 
 ;; STARTUP
@@ -172,63 +172,66 @@
 
   (leader-keys
     ;; Theme
-   "t" '(:ignore t :which-key "theming")
-   "tt" '(counsel-load-theme :which-key "choose-theme")
-   "ts" '(hydra-text-scale/body :which-key "scale text")
+    "t" '(:ignore t :which-key "theming")
+    "tt" '(counsel-load-theme :which-key "choose-theme")
+    "ts" '(hydra-text-scale/body :which-key "scale text")
 
-   ;; Buffer
-   "b" '(:ignore t :which-key "buffer")
-   "be" '(eval-buffer :which-key "eval buffer")
-   "bb" '(switch-to-buffer :which-key "switch buffer")
-   "bj" '(switch-to-next-buffer :which-key "next buffer")
-   "bk" '(switch-to-prev-buffer :which-key "previous buffer")
-   "be" '(eval-buffer :which-key "eval buffer")
-   "bd" '(kill-buffer :which-key "delete buffer")
+    ;; Buffer
+    "b" '(:ignore t :which-key "buffer")
+    "be" '(eval-buffer :which-key "eval buffer")
+    "bb" '(switch-to-buffer :which-key "switch buffer")
+    "bj" '(switch-to-next-buffer :which-key "next buffer")
+    "bk" '(switch-to-prev-buffer :which-key "previous buffer")
+    "be" '(eval-buffer :which-key "eval buffer")
+    "bd" '(kill-buffer :which-key "delete buffer")
 
-   ;; Search  
-   "f" '(:ignore t :which-key "find")
-   "fb" '(swiper :which-key "find in buffer")
-   "ff" '(find-file :which-key "find file")
-   "fr" '(counsel-recentf :which-key "recent files")
+    ;; Search  
+    "f" '(:ignore t :which-key "find")
+    "fb" '(swiper :which-key "find in buffer")
+    "ff" '(find-file :which-key "find file")
+    "fr" '(counsel-recentf :which-key "recent files")
 
-   ;; Project
-   "p" '(:ignore t :which-key "project")
-   "pp" '(counsel-projectile-switch-project :which-key "switch project")
-   "pf" '(counsel-projectile-rg :which-key "find file")
+    ;; Project
+    "p" '(:ignore t :which-key "project")
+    "pp" '(counsel-projectile-switch-project :which-key "switch project")
+    "pf" '(counsel-projectile-rg :which-key "find file")
 
-   ;; Git
-   "g" '(:ignore t :which-key "git")
-   "gg" '(magit-status :which-key "status")
+    ;; Git
+    "g" '(:ignore t :which-key "git")
+    "gg" '(magit-status :which-key "status")
 
-   ;; Window 
-   "w" '(:ignore t :which-key "window")
-   "ws" '(split-window-below :which-key "horizontal-split")
-   "wv" '(split-window-right :which-key "vertical-split")
-   "wl" '(windmove-right :which-key "select-right")
-   "wh" '(windmove-left :which-key "select-left")
-   "wj" '(windmove-down :which-key "select-down")
-   "wk" '(windmove-up :which-key "select-up")
-   "wd" '(delete-window :which-key "delete")
+    ;; Window 
+    "w" '(:ignore t :which-key "window")
+    "ws" '(split-window-below :which-key "horizontal-split")
+    "wv" '(split-window-right :which-key "vertical-split")
+    "wl" '(windmove-right :which-key "select-right")
+    "wh" '(windmove-left :which-key "select-left")
+    "wj" '(windmove-down :which-key "select-down")
+    "wk" '(windmove-up :which-key "select-up")
+    "wd" '(delete-window :which-key "delete")
 
-   ;; Org-Mode
-   "o" '(:ignore t :which-key "org")
-   "oa" '(org-agenda :which-key "agenda")
-   "oi" '(:ignore t :which-key "insert")
-   "or" '(org-refile :which-key "refile")
-   "op" '(org-pomodoro :which-key "pomodoro")
-   "om" '(hydra-org-move/body :which-key "move subtree")
-   "oh" '(org-insert-heading :which-key "insert-heading")
-   "os" '(org-insert-subheading :which-key "insert-subheading")
-   "oc" '(org-capture :which-key "capture")
+    ;; Org-Mode
+    "o" '(:ignore t :which-key "org")
+    "oa" '(org-agenda :which-key "agenda")
+    "oi" '(:ignore t :which-key "insert")
+    "or" '(org-refile :which-key "refile")
+    "op" '(org-pomodoro :which-key "pomodoro")
+    "om" '(hydra-org-move/body :which-key "move subtree")
+    "oh" '(org-insert-heading :which-key "insert-heading")
+    "os" '(org-insert-subheading :which-key "insert-subheading")
+    "oc" '(org-capture :which-key "capture")
+    "og" '(counsel-org-goto :which-key "goto")
+    "oG" '(counsel-org-goto-all :which-key "goto all")
 
-   ;; Org-capture
-   "c" '(org-capture :which-key "org-capture")
 
-   ;; Avy
-   "a" '(:ignore t :which-key "avy")
-   "ac" '(avy-goto-char :whichkey "go to char")
-   "ax" '(avy-goto-char-2 :whichkey "go to char 2")
-  ))
+    ;; Org-capture
+    "c" '(org-capture :which-key "org-capture")
+
+    ;; Avy
+    "a" '(:ignore t :which-key "avy")
+    "ac" '(avy-goto-char :whichkey "go to char")
+    "ax" '(avy-goto-char-2 :whichkey "go to char 2")
+    ))
 
 
 ;; Hydra for active reactive commands (increase/decrease font for example)
@@ -310,12 +313,12 @@
 
 ;; Recent File Finder
 (use-package recentf
-      :bind ("C-x C-r" . recentf-open-files)
-      :config
-      (recentf-mode 1)
-      (setq recentf-max-menu-items 15
-            recentf-max-saved-items 100)
-      :hook (after-init . recentf-mode))
+  :bind ("C-x C-r" . recentf-open-files)
+  :config
+  (recentf-mode 1)
+  (setq recentf-max-menu-items 15
+        recentf-max-saved-items 100)
+  :hook (after-init . recentf-mode))
 
 ;; Org Configuration custom functions
 
@@ -388,6 +391,7 @@
   (setq org-todo-keywords
         '((sequence "TODO(t)" "IN-PROGRESS(p)" "WAIT(w@/!)" "BLOCK(b@/!)" "|" "DONE(d@!)" "CANCELED(c@)")
           (sequence "RESOURCE(r)" "|")
+	  (sequence "MEETING(m)" "SEMINAR(s)")
           (sequence "ACTIVE(a)" "|" "INACTIVE(i)" "COMPLETED(c)")
           (sequence "TRANS-ZOOM(z)" "TRANS-EMAIL(e)" "|" "TRANS-FILED(f)")
           ))
@@ -398,9 +402,11 @@
           ("WAIT" . (:foreground "goldenrod1" :weight bold))
           ("BLOCK" . (:foreground "salmon1" :weight bold))
           ("BLOCK" . (:foreground "goldenrod1" :weight bold))
-          ("RESOURCE" . (:foreground "maroon" :weight bold))
+          ("RESOURCE" . (:foreground "navy" :weight bold))
           ("CANCELED" . (:foreground "blue" :weight bold))
-          ("TRANS-ZOOM" . (:foreground "SpringGreen1" :weight bold))
+          ("MEETING" . (:foreground "LightSteelBlue1" :background "RoyalBlue4" :weight bold))
+          ("SEMINAR" . (:foreground "LightSteelBlue1" :background "purple4" :weight bold))
+          ("TRANS-ZOOM" . (:foreground "MediumPurple4" :background "MediumPurple1" :weight bold))
           ("TRANS-EMAIL" . (:foreground "MediumPurple2" :weight bold))
           ("TRANS-FILED" . (:foreground "MediumPurple4" :weight bold))
 	  ))
