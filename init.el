@@ -402,7 +402,7 @@
           ("WAIT" . (:foreground "goldenrod1" :weight bold))
           ("BLOCK" . (:foreground "salmon1" :weight bold))
           ("BLOCK" . (:foreground "goldenrod1" :weight bold))
-          ("RESOURCE" . (:foreground "navy" :weight bold))
+          ("RESOURCE" . (:foreground "DarkMagenta" :weight bold))
           ("CANCELED" . (:foreground "blue" :weight bold))
           ("MEETING" . (:foreground "LightSteelBlue1" :background "RoyalBlue4" :weight bold))
           ("SEMINAR" . (:foreground "LightSteelBlue1" :background "purple4" :weight bold))
