@@ -134,7 +134,18 @@
 (use-package ivy
   :diminish
   :config
-  (ivy-mode 1))
+  (ivy-mode 1)
+  ;; Get rid of start of line character restriction by removing ^
+  (setq ivy-initial-inputs-alist '((counsel-minor . "^+")
+				   (counsel-package . "^+")
+				   (counsel-org-capture . "^")
+				   (counsel-M-x . "")
+				   (counsel-describe-symbol . "^")
+				   (org-refile . "")
+				   (org-agenda-refile . "^")
+				   (org-capture-refile . "^")
+				   (Man-completion-table . "^")
+				   (woman . "^"))))
 
 ;; Enable ivy-rich mode
 (use-package ivy-rich
@@ -215,6 +226,7 @@
     "oa" '(org-agenda :which-key "agenda")
     "oi" '(:ignore t :which-key "insert")
     "or" '(org-refile :which-key "refile")
+    "ot" '(org-change-tag-in-region :which-key "bulk tag")
     "op" '(org-pomodoro :which-key "pomodoro")
     "om" '(hydra-org-move/body :which-key "move subtree")
     "oh" '(org-insert-heading :which-key "insert-heading")
@@ -445,16 +457,16 @@
           ("cn" "New Consult" entry (file "~/jhu-org/consults.org")
            "* ACTIVE %^{Patron Name}: %^{Short Description of Consult} %t %^g\n** Background\n%x\n** Interactions\n%?\n** TODOs")
           ("cz" "Zoom Consult" entry (file "~/jhu-org/consults.org")
-           "* TRANS-ZOOM Zoom Consult w/ %^{Patron Name}: %^{short description} %^t :file:%^g\n
+           "* TRANS-ZOOM Zoom Consult w/ %^{Patron Name}: %^{Short Description} %^t :file:%^g\n
             %?")
           ("cZ" "Zoom Consult w/ Clipboard" entry (file "~/jhu-org/consults.org")
-           "* TRANS-ZOOM Zoom Consult w/ %^{Patron Name}: %^{short description} %^t :zoom:file:%^g\n
+           "* TRANS-ZOOM Zoom Consult w/ %^{Patron Name}: %^{Short Description} %^t :zoom:file:%^g\n
             %x%?")
           ("ce" "Email Consult" entry (file "~/jhu-org/consults.org")
-           "* TRANS-EMAIL Email Consult w/ %^{Patron Name}: %^{short description} %t :file:%^g\n
+           "* TRANS-EMAIL Email Consult w/ %^{Patron Name}: %^{Short Description} %t :file:%^g\n
             %?")
           ("cE" "Email Consult w/ Clipboard" entry (file "~/jhu-org/consults.org")
-           "* TRANS-EMAIL Email Consult w/ %^{Patron Name}: %^{short description} %t :file:%^g\n
+           "* TRANS-EMAIL Email Consult w/ %^{Patron Name}: %^{Short Description} %t :file:%^g\n
             %x%?")
           ("r" "Resource with Clipboard" entry (file "~/jhu-org/inbox.org")
            "* RESOURCE %?\n  %U\n  %x")
