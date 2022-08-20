@@ -201,6 +201,7 @@
     "fb" '(swiper :which-key "find in buffer")
     "ff" '(find-file :which-key "find file")
     "fr" '(counsel-recentf :which-key "recent files")
+    "ft" '(org-tags-view :which-key "org-headlines by tag")
 
     ;; Project
     "p" '(:ignore t :which-key "project")
@@ -453,6 +454,10 @@
            "* TODO %? %^g\n  %U\n")
           ("tT" "Todo with Clipboard" entry (file "~/jhu-org/inbox.org")
            "* TODO %? %^g\n  %U\n  %x")
+	  ("ts" "Scheduled Todo" entry (file "~/jhu-org/inbox.org")
+           "* TODO %? %^g\n :SCHEDULED %^t\n")
+          ("tS" "Scheduled Todo with Clipboard" entry (file "~/jhu-org/inbox.org")
+           "* TODO %? %^g\n :SCHEDULED %^t \n  %x")
 	  ("c" "Consultations")
           ("cn" "New Consult" entry (file "~/jhu-org/consults.org")
            "* ACTIVE %^{Patron Name}: %^{Short Description of Consult} %t %^g\n** Background\n%x\n** Interactions\n%?\n** TODOs")
@@ -542,17 +547,14 @@
                             (:name "Today's TODOs"
                                    :tag "next"
                                    :order 1)
-                            (:name "Queue (What to work on next)"
-                                   :tag "queue"
+                            (:name "Important (What to work on next)"
+                                   :priority ("A" "B")
                                    :order 3)
                             (:name "Due Today"
                                    :scheduled today
                                    :deadline today
                                    :todo "today"
                                    :order 4)
-                            (:name "Important"
-                                   :priority "A"
-                                   :order 5)
                             (:name "To File in LibAnswers"
                                    :tag "file"
                                    :order 6)
