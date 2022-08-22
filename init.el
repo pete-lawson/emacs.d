@@ -196,12 +196,14 @@
     "be" '(eval-buffer :which-key "eval buffer")
     "bd" '(kill-buffer :which-key "delete buffer")
 
-    ;; Search  
-    "f" '(:ignore t :which-key "find")
-    "fb" '(swiper :which-key "find in buffer")
-    "ff" '(find-file :which-key "find file")
+    ;; File 
+    "f" '(:ignore t :which-key "file")
+    "ff" '(counsel-find-file :which-key "find file")
     "fr" '(counsel-recentf :which-key "recent files")
-    "ft" '(org-tags-view :which-key "org-headlines by tag")
+
+    ;; Search  
+    "/" '(:ignore t :which-key "search")
+    "/b" '(swiper :which-key "search in buffer")
 
     ;; Project
     "p" '(:ignore t :which-key "project")
@@ -219,7 +221,7 @@
     "wl" '(windmove-right :which-key "select-right")
     "wh" '(windmove-left :which-key "select-left")
     "wj" '(windmove-down :which-key "select-down")
-    "wk" '(windmove-up :which-key "select-up")
+    "wk" '(windmove-up :which-key"select-up")
     "wd" '(delete-window :which-key "delete")
 
     ;; Org-Mode
@@ -235,6 +237,8 @@
     "oc" '(org-capture :which-key "capture")
     "og" '(counsel-org-goto :which-key "goto")
     "oG" '(counsel-org-goto-all :which-key "goto all")
+    "oT" '(org-tags-view :which-key "org-headlines by tag")
+    "o/" '(org-search-view :which-key "org by keyword")
 
 
     ;; Org-capture
@@ -477,9 +481,9 @@
            "* RESOURCE %?\n  %U\n  %x")
 	  ("m" "Meetings")
           ("mm" "Meeting" entry (file "~/jhu-org/meetings.org")
-           "* %^{Meeting Title} %^T\n:PROPERTIES:\n:Description: %^{Brief Description of Meeting}\n** Background\n** Meeting Notes\n%?")
+           "* MEETING %^{Meeting Title} %^T\n:PROPERTIES:\n:Description: %^{Brief Description of Meeting}\n** Background\n** Meeting Notes\n%?")
           ("mM" "Meeting with Clipboard" entry (file "~/jhu-org/meetings.org")
-           "* %^{Meeting Title} %^T\n:PROPERTIES:\n:Description: %^{Brief Description of Meeting}\n** Background\n%x\n** Meeting Notes\n%?")
+           "* MEETING %^{Meeting Title} %^T\n:PROPERTIES:\n:Description: %^{Brief Description of Meeting}\n** Background\n%x\n** Meeting Notes\n%?")
           ("a"               ; key
            "Article"         ; name
            entry             ; type
