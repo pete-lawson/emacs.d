@@ -239,6 +239,8 @@
     "oG" '(counsel-org-goto-all :which-key "goto all")
     "oT" '(org-tags-view :which-key "org-headlines by tag")
     "o/" '(org-search-view :which-key "org by keyword")
+    "of" '(org-narrow-to-subtree :which-key "focus on current subtree")
+    "oF" '(widen :which-key "remove focus")
 
 
     ;; Org-capture
