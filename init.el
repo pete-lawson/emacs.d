@@ -13,7 +13,7 @@
 (setq-default sysTypeSpecific  system-type) ;; get the system-type value
 
 ;; Font 
-(set-face-attribute 'default nil :font "Fira Code Retina" :height 160)
+(set-face-attribute 'default nil :font "Fira Code Retina" :height 165)
 
 ;; If type is "wsl/linux", then set font smaller (retina scaling) and
 ;; set cmd.exe path so that links open natively in Windows.
@@ -151,6 +151,31 @@
 (use-package ivy-rich
   :init
   (ivy-rich-mode 1))
+
+;; Enable polymode
+(use-package poly-markdown
+  :ensure t)
+
+;; Enable ess
+(use-package ess
+  :ensure t
+  :init (require 'ess-site))
+
+;; Add mode for markdown
+(use-package markdown-mode
+  :ensure t
+  :mode ("README\\.md\\'" . gfm-mode)
+  :init (setq markdown-command "multimarkdown"))
+
+;; Add mode for Quarto
+(use-package quarto-mode
+  :mode (("\\.Rmd" . poly-quarto-mode))
+  )
+;; Replicate surround.vim plugin in Emacs
+(use-package evil-surround
+  :ensure t
+  :config
+  (global-evil-surround-mode 1))
 
 ;; Override the basic Emacs commands
 (use-package counsel
