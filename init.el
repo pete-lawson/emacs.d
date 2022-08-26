@@ -152,6 +152,26 @@
   :init
   (ivy-rich-mode 1))
 
+;; Be Evil!
+(use-package evil
+  :init
+  (setq evil-want-integration t)
+  (setq evil-want-keybinding nil)
+  :config
+  (evil-mode 1)
+  (define-key evil-insert-state-map (kbd "C-g") 'evil-normal-state)
+
+  ;; Use visual line motions even outside of visual-line-mode buffers
+  (evil-global-set-key 'motion "j" 'evil-next-visual-line)
+  (evil-global-set-key 'motion "k" 'evil-previous-visual-line))
+
+;; Add missing evil keybindings
+(use-package evil-collection
+  :after evil
+  :ensure t
+  :config
+  (evil-collection-init))
+
 ;; Enable polymode
 (use-package poly-markdown
   :ensure t)
@@ -295,25 +315,6 @@
   ("l" org-demote-subtree "demote")
   )
 
-;; Be Evil!
-(use-package evil
-  :init
-  (setq evil-want-integration t)
-  (setq evil-want-keybinding nil)
-  :config
-  (evil-mode 1)
-  (define-key evil-insert-state-map (kbd "C-g") 'evil-normal-state)
-
-  ;; Use visual line motions even outside of visual-line-mode buffers
-  (evil-global-set-key 'motion "j" 'evil-next-visual-line)
-  (evil-global-set-key 'motion "k" 'evil-previous-visual-line))
-
-;; Add missing evil keybindings
-(use-package evil-collection
-  :after evil
-  :ensure t
-  :config
-  (evil-collection-init))
 
 ;; Improved help menu
 (use-package helpful
