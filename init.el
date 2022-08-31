@@ -280,7 +280,7 @@
     "oih" '(org-insert-heading-respect-content :which-key "insert-heading")
     "ois" '(org-insert-subheading :which-key "insert-subheading")
     "oit" '(org-insert-todo-heading-respect-content :which-key "insert-todo")
-    "oiT" '(org-insert-todo-heading-respect-content :which-key "insert-todo-subheading")
+    "oiT" '(org-insert-todo-subheading :which-key "insert-todo-subheading")
     "oc" '(org-capture :which-key "capture")
     "og" '(counsel-org-goto :which-key "goto")
     "oG" '(counsel-org-goto-all :which-key "goto all")
