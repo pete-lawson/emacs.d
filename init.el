@@ -179,18 +179,21 @@
 ;; Enable ess
 (use-package ess
   :ensure t
-  :init (require 'ess-site))
+  :init (require 'ess-site)
+  :config
+  (setq ansi-color-for-comint-mode 'filter))
+  
 
 ;; Add mode for markdown
-(use-package markdown-mode
-  :ensure t
-  :mode ("README\\.md\\'" . gfm-mode)
-  :init (setq markdown-command "multimarkdown"))
+  (use-package markdown-mode
+    :ensure t
+    :mode ("README\\.md\\'" . gfm-mode)
+    :init (setq markdown-command "multimarkdown"))
 
 ;; Add mode for Quarto
-(use-package quarto-mode
-  :mode (("\\.Rmd" . poly-quarto-mode))
-  )
+  (use-package quarto-mode
+    :mode (("\\.Rmd" . poly-quarto-mode))
+    )
 ;; Replicate surround.vim plugin in Emacs
 (use-package evil-surround
   :ensure t
@@ -268,6 +271,7 @@
     "wj" '(windmove-down :which-key "select-down")
     "wk" '(windmove-up :which-key"select-up")
     "wd" '(delete-window :which-key "delete")
+    "wf" '(toggle-frame-fullscreen :which-key "fullscreen")
 
     ;; Org-Mode
     "o" '(:ignore t :which-key "org")
