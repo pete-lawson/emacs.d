@@ -116,6 +116,10 @@
 		eshell-mode-hook))
   (add-hook mode (lambda () (display-line-numbers-mode 0))))
 
+
+;; Configure Parentheses 
+(setq show-paren-delay 0)
+(show-paren-mode 1)
 ;; add color matched brackets, braces, parentheses
 (use-package rainbow-delimiters
   :hook (prog-mode . rainbow-delimiters-mode))
@@ -274,6 +278,7 @@
     "oa" '(org-agenda :which-key "agenda")
     "oi" '(:ignore t :which-key "insert")
     "or" '(org-refile :which-key "refile")
+    "os" '(org-sort :which-key "sort")
     "ot" '(org-change-tag-in-region :which-key "bulk tag")
     "op" '(org-pomodoro :which-key "pomodoro")
     "om" '(hydra-org-move/body :which-key "move subtree")
@@ -565,7 +570,13 @@
 				'((:auto-outline-path t)))))
             )
            )
-
+          ("c" "Consults"
+           ((todo "TODO|WAIT" (
+                               (org-agenda-files '("~/jhu-org/consults.org"))
+                               (org-super-agenda-groups
+				'((:auto-outline-path t)))))
+            )
+           )
           ;; '((:auto-category t))))
 	  
           ("d" "Daily Tasks"
