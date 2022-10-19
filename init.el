@@ -183,18 +183,21 @@
 ;; Enable ess
 (use-package ess
   :ensure t
-  :init (require 'ess-site))
+  :init (require 'ess-site)
+  :config
+  (setq ansi-color-for-comint-mode 'filter))
+  
 
 ;; Add mode for markdown
-(use-package markdown-mode
-  :ensure t
-  :mode ("README\\.md\\'" . gfm-mode)
-  :init (setq markdown-command "multimarkdown"))
+  (use-package markdown-mode
+    :ensure t
+    :mode ("README\\.md\\'" . gfm-mode)
+    :init (setq markdown-command "multimarkdown"))
 
 ;; Add mode for Quarto
-(use-package quarto-mode
-  :mode (("\\.Rmd" . poly-quarto-mode))
-  )
+  (use-package quarto-mode
+    :mode (("\\.Rmd" . poly-quarto-mode))
+    )
 ;; Replicate surround.vim plugin in Emacs
 (use-package evil-surround
   :ensure t
@@ -272,6 +275,7 @@
     "wj" '(windmove-down :which-key "select-down")
     "wk" '(windmove-up :which-key"select-up")
     "wd" '(delete-window :which-key "delete")
+    "wf" '(toggle-frame-fullscreen :which-key "fullscreen")
 
     ;; Org-Mode
     "o" '(:ignore t :which-key "org")
@@ -285,7 +289,7 @@
     "oih" '(org-insert-heading-respect-content :which-key "insert-heading")
     "ois" '(org-insert-subheading :which-key "insert-subheading")
     "oit" '(org-insert-todo-heading-respect-content :which-key "insert-todo")
-    "oiT" '(org-insert-todo-heading-respect-content :which-key "insert-todo-subheading")
+    "oiT" '(org-insert-todo-subheading :which-key "insert-todo-subheading")
     "oc" '(org-capture :which-key "capture")
     "og" '(counsel-org-goto :which-key "goto")
     "oG" '(counsel-org-goto-all :which-key "goto all")
@@ -311,7 +315,7 @@
 (defhydra hydra-text-scale (:timeout 4)
   "scale text"
   ("j" text-scale-increase "in")
-  ("k" text-scale-increase "out")
+  ("k" text-scale-decrease "out")
   ("f" nil "finished" :exit t))
 
 (defhydra hydra-org-move (:timeout 4)
