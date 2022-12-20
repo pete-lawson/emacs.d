@@ -139,6 +139,8 @@
   :diminish
   :config
   (ivy-mode 1)
+  (define-key ivy-minibuffer-map (kbd "S-SPC") nil)     
+  (define-key ivy-minibuffer-map (kbd "M-SPC") 'ivy-restrict-to-matches)
   ;; Get rid of start of line character restriction by removing ^
   (setq ivy-initial-inputs-alist '((counsel-minor . "^+")
 				   (counsel-package . "^+")
@@ -301,6 +303,9 @@
 
     ;; Org-capture
     "c" '(org-capture :which-key "org-capture")
+
+    ;; Rapid frame switching
+    "j" '(other-frame :which-key "switch frame")
 
     ;; Avy
     "a" '(:ignore t :which-key "avy")
@@ -612,12 +617,12 @@
                                    :deadline past
                                    :order 7)
                             (:discard (:anything))))))))
-	  
+
           ))
   
   ;; Ensure org files saved after a refile
-  (advice-add 'org-refile :after 'org-save-all-org-buffers)
-  )
+  (advice-add 'org-refile :after 'org-save-all-org-buffers))
+
 
 ;; Code
 ;; -----------------------
