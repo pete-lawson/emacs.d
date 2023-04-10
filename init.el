@@ -651,6 +651,7 @@
           ("p" "Projects"
            ((todo "TODO|WAIT" (
 			       (org-agenda-files '("~/jhu-org/projects.org"))
+			       (org-agenda-skip-function '(org-agenda-skip-entry-if 'notregexp "\\[#A\\]"))
 			       (org-super-agenda-groups
 				'((:auto-outline-path t)))))
             )
