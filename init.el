@@ -454,7 +454,7 @@
   ;; Set fixed pitch and variable pitch fonts
   (custom-theme-set-faces
    'user
-   '(variable-pitch ((t (:family "ETBembo" :height 180))))
+   '(variable-pitch ((t (:family "ETBembo" :height 1.1))))
    '(fixed-pitch ((t ( :family "Fira Code Retina" :height 135)))))
 
 
