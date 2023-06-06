@@ -233,6 +233,7 @@
   :bind* ; load when pressed 
   (("M-x"     . counsel-M-x)
    ("C-s"     . swiper)
+   ("C-c l"   . org-store-link)
    ("C-x b"   . counsel-ibuffer)
    ("C-x c-f" . counsel-find-file)
    ("C-x c-r" . counsel-recentf)  ; search for recently edited
@@ -325,6 +326,9 @@
 
     ;; Org-capture
     "c" '(org-capture :which-key "org-capture")
+
+    ;; Clipboard history
+    "k" '(counsel-yank-pop :which-key "kill ring")
 
     ;; org-roam
     "r" '(:ignore t :which-key "org-roam")
