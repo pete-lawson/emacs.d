@@ -490,7 +490,7 @@
 
   (setq org-startup-indented t)
   (setq org-enforce-todo-dependencies t)
-  (setq org-agenda-dim-blocked-tasks 'invisible)
+  (setq org-agenda-dim-blocked-tasks 'nil)
   (setq org-agenda-window-setup 'only-window)
   (setq org-agenda-tags-column -100)
   (setq org-auto-align-tags t)
@@ -560,6 +560,7 @@
 	'(
           ("file" . ?f)
           ("next" . ?n)
+          ("blocking" . ?b)
           ("jira" . ?j)
           ("admin" . ?a)
           ("meeting" . ?m)
@@ -573,6 +574,10 @@
           ("workshop" . ?w)
           ("toread" . ?r)
           ))
+
+  ;; Set tag faces
+  (setq org-tag-faces
+	'(("blocking" . (:foreground "white" :background "red3" :weight bold :inherit fixed-pitch :height 1.1))))
 
   (setq org-capture-templates
 	'(
@@ -678,7 +683,7 @@
 	  
           ("d" "Daily Tasks"
            (
-            (agenda "" ((org-agenda-span 12)
+            (agenda "" ((org-agenda-span 6)
 			(org-agenda-files '("~/jhu-org/meetings.org" "~/jhu-org/consults.org" "~/jhu-org/calendar.org" "~/jhu-org/todo.org" "~/jhu-org/projects.org"))
 			(org-agenda-skip-function '(org-agenda-skip-entry-if 'todo '("TRANS-EMAIL" "DONE" "INACTIVE" "ACTIVE" "CANCELED" "RESOURCE")))
 					; (org-agenda-entry-types '(:date :deadline :scheduled))
