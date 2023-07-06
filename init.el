@@ -19,14 +19,14 @@
 ;; set cmd.exe path so that links open natively in Windows.
 (when (and (eq system-type 'gnu/linux)
            (getenv "WSLENV"))
-  (set-face-attribute 'default nil :font "Fira Code Retina" :height 130)
+  (set-face-attribute 'default nil :font "Fira Code Retina" :height 145)
   (setq-default sysTypeSpecific "wsl/linux") ;; for later use.
   (setq
-   cmdExeBin"/mnt/c/Windows/System32/cmd.exe"
-   cmdExeArgs '("/c" "start" "") )
+   cmdexebin"/mnt/c/windows/system32/cmd.exe"
+   cmdexeargs '("/c" "start" "") )
   (setq
-   browse-url-generic-program  cmdExeBin
-   browse-url-generic-args     cmdExeArgs
+   browse-url-generic-program  cmdexebin
+   browse-url-generic-args     cmdexeargs
    browse-url-browser-function 'browse-url-generic)
   )
 
@@ -44,8 +44,8 @@
 
 ;; set package sources
 (setq package-archives '(("melpa" . "https://melpa.org/packages/")
-			 ("org"   . "https://orgmode.org/elpa/")
-			 ("elpa"  . "https://elpa.gnu.org/packages/")))
+			 ("nongnu" . "https://elpa.nongnue.org/nongnu/")
+			 ("gnu"  . "https://elpa.gnu.org/packages/")))
 
 ;; Ensure package archives are downloaded
 (package-initialize)
@@ -71,14 +71,14 @@
   ;; Global settings (defaults)
   (setq doom-themes-enable-bold t    ; if nil, bold is universally disabled
         doom-themes-enable-italic t) ; if nil, italics is universally disabled
-  (load-theme 'doom-one t)
+  ;;  (load-theme 'doom-solarized-light t)
 
   ;; Enable flashing mode-line on errors
   (doom-themes-visual-bell-config)
   ;; Enable custom neotree theme (all-the-icons must be installed!)
   (doom-themes-neotree-config)
   ;; or for treemacs users
-  (setq doom-themes-treemacs-theme "doom-atom") ; use "doom-colors" for less minimal icon theme
+  (setq doom-themes-treemacs-theme "doom-solarized-light") ; use "doom-colors" for less minimal icon theme
   (doom-themes-treemacs-config)
   ;; Corrects (and improves) org-mode's native fontification.
   (doom-themes-org-config))
@@ -98,9 +98,24 @@
   ;; Define your custom doom-modeline
   (with-eval-after-load "doom-modeline"
     (doom-modeline-def-modeline 'main
-    '(bar workspace-name window-number modals matches buffer-info remote-host parrot misc-info)
-    '(selection-info buffer-position word-count objed-state persp-name battery grip irc mu4e gnus github debug lsp minor-modes input-method indent-info buffer-encoding major-mode process vcs checker)))
+      '(bar workspace-name window-number modals matches buffer-info remote-host parrot misc-info)
+      '(selection-info buffer-position word-count objed-state persp-name battery grip irc mu4e gnus github debug lsp minor-modes input-method indent-info buffer-encoding major-mode process vcs checker)))
   )
+
+;; Use the Modus-Operandi-Tinted high-contrast theme
+(use-package modus-themes
+  :ensure t
+  :config
+  ;; Add all your customizations prior to loading the themes
+  (setq modus-themes-italic-constructs t
+        modus-themes-bold-constructs nil)
+
+  ;; Maybe define some palette overrides, such as by using our presets
+  (setq modus-themes-common-palette-overrides
+        modus-themes-preset-overrides-intense)
+
+  ;; Load the theme of your choice.
+  (load-theme 'modus-operandi-tinted :no-confirm))
 
 ;; Set Transparency
 (set-frame-parameter (selected-frame) 'alpha '(98 98))
@@ -133,6 +148,13 @@
 ;; Quit prompts with ESC
 (global-set-key (kbd "<escape>") 'keyboard-escape-quit)
 
+(use-package company
+  :bind (:map company-active-map
+              ("C-n" . company-select-next)
+              ("C-p" . company-select-previous))
+  :config
+  (setq company-idle-delay 0.3)
+  (global-company-mode t))
 
 ;; Enable ivy autocompletion
 (use-package ivy
@@ -188,18 +210,18 @@
   :init (require 'ess-site)
   :config
   (setq ansi-color-for-comint-mode 'filter))
-  
+
 
 ;; Add mode for markdown
-  (use-package markdown-mode
-    :ensure t
-    :mode ("README\\.md\\'" . gfm-mode)
-    :init (setq markdown-command "multimarkdown"))
+(use-package markdown-mode
+  :ensure t
+  :mode ("README\\.md\\'" . gfm-mode)
+  :init (setq markdown-command "multimarkdown"))
 
 ;; Add mode for Quarto
-  (use-package quarto-mode
-    :mode (("\\.Rmd" . poly-quarto-mode))
-    )
+(use-package quarto-mode
+  :mode (("\\.Rmd" . poly-quarto-mode))
+  )
 ;; Replicate surround.vim plugin in Emacs
 (use-package evil-surround
   :ensure t
@@ -211,6 +233,7 @@
   :bind* ; load when pressed 
   (("M-x"     . counsel-M-x)
    ("C-s"     . swiper)
+   ("C-c l"   . org-store-link)
    ("C-x b"   . counsel-ibuffer)
    ("C-x c-f" . counsel-find-file)
    ("C-x c-r" . counsel-recentf)  ; search for recently edited
@@ -250,14 +273,12 @@
     "be" '(eval-buffer :which-key "eval buffer")
     "bd" '(kill-buffer :which-key "delete buffer")
 
-    ;; File 
+    ;; Find
     "f" '(:ignore t :which-key "file")
     "ff" '(counsel-find-file :which-key "find file")
     "fr" '(counsel-recentf :which-key "recent files")
-
-    ;; Search  
-    "/" '(:ignore t :which-key "search")
-    "/b" '(swiper :which-key "search in buffer")
+    "fb" '(swiper :which-key "search in buffer")
+    "fp" '(counsel-projectile-rg :which-key "search in project")
 
     ;; Project
     "p" '(:ignore t :which-key "project")
@@ -288,10 +309,11 @@
     "ot" '(org-change-tag-in-region :which-key "bulk tag")
     "op" '(org-pomodoro :which-key "pomodoro")
     "om" '(hydra-org-move/body :which-key "move subtree")
-    "oih" '(org-insert-heading-respect-content :which-key "insert-heading")
-    "ois" '(org-insert-subheading :which-key "insert-subheading")
-    "oit" '(org-insert-todo-heading-respect-content :which-key "insert-todo")
-    "oiT" '(org-insert-todo-subheading :which-key "insert-todo-subheading")
+    "oih" '(org-insert-heading-respect-content :which-key "insert heading")
+    "ois" '(org-insert-subheading :which-key "insert subheading")
+    "oit" '(org-insert-todo-heading-respect-content :which-key "insert todo")
+    "oiT" '(org-insert-todo-subheading :which-key "insert todo subheading")
+    "oib" '(org-insert-heading-after-current :which-key "insert heading after current")
     "oc" '(org-capture :which-key "capture")
     "og" '(counsel-org-goto :which-key "goto")
     "oG" '(counsel-org-goto-all :which-key "goto all")
@@ -299,18 +321,31 @@
     "o/" '(org-search-view :which-key "org by keyword")
     "of" '(org-narrow-to-subtree :which-key "focus on current subtree")
     "oF" '(widen :which-key "remove focus")
+    "ob" '(org-sidebar-toggle :which-key "toggle sidebar")
 
 
     ;; Org-capture
     "c" '(org-capture :which-key "org-capture")
+
+    ;; Clipboard history
+    "k" '(counsel-yank-pop :which-key "kill ring")
+
+    ;; org-roam
+    "r" '(:ignore t :which-key "org-roam")
+    "rb" '(org-roam-buffer-toggle :which-key "toggle roam buffer")
+    "rf" '(org-roam-node-find :which-key "find roam node")
+    "ri" '(org-roam-node-insert :which-key "insert roam node")
+    "rs" '(org-roam-db-sync :which-key "sync roam database")
+    "rg" '(org-roam-graph :which-key "roam graph")
+    "ru" '(org-roam-ui-open :which-key "open org-roam ui")
 
     ;; Rapid frame switching
     "j" '(other-frame :which-key "switch frame")
 
     ;; Avy
     "a" '(:ignore t :which-key "avy")
-    "ac" '(avy-goto-char :whichkey "go to char")
-    "ax" '(avy-goto-char-2 :whichkey "go to char 2")
+    "ac" '(avy-goto-char :which-key "go to char")
+    "ax" '(avy-goto-char-2 :which-key "go to char 2")
     ))
 
 
@@ -368,9 +403,9 @@
   :config
   ;; Display magit as full screen buffer
   (setq magit-post-display-buffer-hook
-      #'(lambda ()
-	  (when (derived-mode-p 'magit-status-mode)
-		(delete-other-windows)))))
+	#'(lambda ()
+	    (when (derived-mode-p 'magit-status-mode)
+	      (delete-other-windows)))))
 
 ;; Recent File Finder
 (use-package recentf
@@ -417,20 +452,84 @@
    )
   (setq org-pomodoro-format "%s")
   )
+  (setq visual-fill-column-center-text t
+	visual-fill-column-width 100)
+
+(visual-fill-column-mode 1))
 
 ;; Org-Mode!
 (use-package org
   :hook (org-mode . org-mode-setup)
   :config
-  (setq org-startup-indented t)
-  (setq org-agenda-window-setup 'only-window)
-  (setq org-ellipsis "  ▼")
-  (setq org-hide-leading-stars nil)
-  (org-visual-config)
-  (setq org-directory "~/jhu-org/")
+
+  ;; Make org beautiful. Create a readable org environment by
+  ;; configuring variable width font with the ETBembo font (inspired
+  ;; by Tufte)
+  ;; 
+  ;; -------------------
   ;; Hide bold, italics, etc markers 
-  (setq org-hide-emphasis-markers t) 
+  (setq org-hide-emphasis-markers t)
+
+  ;; Enable variable pitch mode in org-mode exclusively
+  (add-hook 'org-mode-hook 'variable-pitch-mode)
+
+  ;; Enable line wrapping: instead of setting an explicit width, text
+  ;; wraps to the window width. Will need to remember to press M-q to
+  ;; adjust the current paragraph.
+  (add-hook 'org-mode-hook 'visual-line-mode)
+
+  ;; Use custom ellipsis for indicating a closed block
+  (setq org-ellipsis "  ▼")
+
+  ;; Hide leading stars for clean nested bullets
+  (setq org-hide-leading-stars nil)
+
+  ;; Set fixed pitch and variable pitch fonts
+  (custom-theme-set-faces
+   'user
+   '(variable-pitch ((t (:family "ETBembo" :height 1.1))))
+   '(fixed-pitch ((t ( :family "Fira Code Retina" :height 135)))))
+
+
+
+  ;; We don't want everything to be variable pitch. Fix it with
+  ;; custom faces.
+  (custom-theme-set-faces
+   'user
+   '(org-block ((t (:inherit fixed-pitch))))
+   '(org-code ((t (:inherit (shadow fixed-pitch)))))
+   '(org-document-info ((t (:foreground "dark orange"))))
+   '(org-document-info-keyword ((t (:inherit (shadow fixed-pitch)))))
+   '(org-indent ((t (:inherit (org-hide fixed-pitch)))))
+   '(org-link ((t (:foreground "royal blue" :underline t))))
+   '(org-meta-line ((t (:inherit (font-lock-comment-face fixed-pitch)))))
+   '(org-property-value ((t (:inherit fixed-pitch))) t)
+   '(org-special-keyword ((t (:inherit (font-lock-comment-face fixed-pitch)))))
+   '(org-table ((t (:inherit fixed-pitch :foreground "#83a598"))))
+   '(org-tag ((t (:inherit (shadow fixed-pitch) :weight bold :height 1.1))))
+   '(org-level-1 ((t (:inherit variable-pitch :weight bold :height 1.2))) t)
+   '(org-level-2 ((t (:inherit variable-pitch :height 1.1))) t)
+   '(org-level-3 ((t (:inherit variable-pitch :height 1.0))) t)
+   '(org-level-4 ((t (:inherit variable-pitch))) t)
+   '(org-verbatim ((t (:inherit (shadow fixed-pitch))))))
+
+
+  ;; It's done. Org is beautiful.
+  ;; -------------------------------
+
+  (setq org-startup-indented t)
+  (setq org-enforce-todo-dependencies t)
+  (setq org-agenda-dim-blocked-tasks 'nil)
+  (setq org-agenda-window-setup 'only-window)
+  (setq org-agenda-tags-column -100)
+  (setq org-auto-align-tags t)
+  (setq org-tags-column -100)
+					;(org-visual-config)
+  (setq org-directory "~/jhu-org/")
+
+
   (setq org-agenda-files (directory-files-recursively "~/jhu-org/" "\\.org$"))
+
   ;; Org-refile set depth of agendas
   (setq org-outline-path-complete-in-steps t)
   (setq org-refile-targets '((nil :maxlevel . 1)
@@ -438,79 +537,91 @@
   ;; Refile to specific org file with heading path
   (setq org-refile-use-outline-path 'file)
   (setq org-outline-path-complete-in-steps nil)         ; Refile in a single go
+
   ;; Record a CLOSED tag and date/time when moving to completed state (done or cancelled)
   (setq org-log-done t)
+
   ;; Log closed TODOs with a note and timestamp
   (setq org-log-done 'note)
+
   ;; Log todo state changes in drawer of todo
   (setq org-log-into-drawer t)
+
+  ;; configure org-goto to jump to headline
+  ;; (setq org-goto-interface 'outline-path-completion
+  ;; 	org-goto-max-level 10)
+  (setq org-outline-path-complete-in-steps nil)
+
   ;; Truncate long org-clock tasks so they fit in mode-line
   (setq org-clock-heading-function
 	(lambda ()
 	  (let ((str (nth 4 (org-heading-components))))
 	    (if (> (length str) 20)
 		(substring str 0 20)))))
+
   ;; Set Org Keywords
   (setq org-todo-keywords
-        '((sequence "TODO(t)" "IN-PROGRESS(p)" "WAIT(w@/!)" "BLOCK(b@/!)" "|" "DONE(d@!)" "CANCELED(c@)")
+	'((sequence "TODO(t)" "IN-PROGRESS(p)" "WAIT(w)" "|" "DONE(d@!)" "CANCELED(c@)")
           (sequence "RESOURCE(r)" "|")
-	  (sequence "MEETING(m)" "SEMINAR(s)")
-          (sequence "ACTIVE(a)" "|" "INACTIVE(i)" "COMPLETED(c)")
+	  (sequence "MEETING(m)" "SEMINAR(s)" "WORKSHOP(W)" "|")
+          (sequence "ACTIVE(a)" "DEFERRED(i)" "|" "COMPLETED(c)")
           (sequence "TRANS-ZOOM(z)" "TRANS-EMAIL(e)" "|" "TRANS-FILED(f)")
           ))
   ;; Color those keywords
   (setq org-todo-keyword-faces
-	'(("TODO" . (:foreground "DarkOliveGreen1" :weight bold))
-          ("IN-PROGRESS" . (:foreground "goldenrod1" :weight bold))
-          ("WAIT" . (:foreground "goldenrod1" :weight bold))
-          ("BLOCK" . (:foreground "salmon1" :weight bold))
-          ("BLOCK" . (:foreground "goldenrod1" :weight bold))
-          ("RESOURCE" . (:foreground "DarkMagenta" :weight bold))
-          ("CANCELED" . (:foreground "blue" :weight bold))
-          ("MEETING" . (:foreground "LightSteelBlue1" :background "RoyalBlue4" :weight bold))
-          ("SEMINAR" . (:foreground "LightSteelBlue1" :background "purple4" :weight bold))
-          ("TRANS-ZOOM" . (:foreground "MediumPurple4" :background "MediumPurple1" :weight bold))
-          ("TRANS-EMAIL" . (:foreground "MediumPurple2" :weight bold))
-          ("TRANS-FILED" . (:foreground "MediumPurple4" :weight bold))
+	'(
+	  ("TODO" . (:foreground "#8f0075" :weight bold :inherit fixed-pitch :height 1.1))
+          ("IN-PROGRESS" . (:foreground "#354fcf" :weight bold :inherit fixed-pitch :height 1.1))
+          ("DONE" . (:foregrond "#316500" :weight bold :inherit fixed-pitch :height 1.1))
+          ("WAIT" . (:foreground "goldenrod1" :weight bold :inherit fixed-pitch :height 1.1))
+          ("BLOCK" . (:foreground "#a60000" :weight bold :inherit fixed-pitch :height 1.1))
+          ("RESOURCE" . (:foreground "DarkMagenta" :weight bold :inherit fixed-pitch :height 1.1))
+          ("CANCELED" . (:foreground "blue" :weight bold :inherit fixed-pitch :height 1.1))
+          ("MEETING" . (:foreground "RoyalBlue4" :weight bold :inherit fixed-pitch :height 1.1))
+          ("SEMINAR" . (:foreground "LightSteelBlue1" :background "purple2" :weight bold :inherit fixed-pitch :height 1.1))
+          ("WORKSHOP" . (:foreground "purple4" :weight bold :inherit fixed-pitch :height 1.1))
+          ("TRANS-ZOOM" . (:foreground "MediumPurple1" :weight bold :inherit fixed-pitch :height 1.1))
+          ("TRANS-EMAIL" . (:foreground "MediumPurple2" :weight bold :inherit fixed-pitch :height 1.1))
 	  ))
 
   ;; Set tags
   (setq org-tag-alist
-        '(
+	'(
           ("file" . ?f)
           ("next" . ?n)
+          ("blocking" . ?b)
           ("jira" . ?j)
-          ("queue" . ?q)
           ("admin" . ?a)
           ("meeting" . ?m)
           ("datavis" . ?v)
           ("access" . ?c)
           ("consult" . ?t)
           ("dev" . ?d)
+	  ("active" . ?e)
           ("icpsr" . ?i)
-          ("deid" . ?e)
-          ("deia" . ?z)
-          ("socsci" . ?s)
           ("outreach" . ?o)
           ("workshop" . ?w)
           ("toread" . ?r)
-          ("code" . ?x)
           ))
 
+  ;; Set tag faces
+  (setq org-tag-faces
+	'(("blocking" . (:foreground "white" :background "red3" :weight bold :inherit fixed-pitch :height 1.1))))
+
   (setq org-capture-templates
-        '(
+	'(
 	  ("t" "Task")
 	  ("tt" "Todo" entry (file "~/jhu-org/inbox.org")
-           "* TODO %? %^g\n  %U\n")
+           "* TODO %? %^G\n  %U\n")
           ("tT" "Todo with Clipboard" entry (file "~/jhu-org/inbox.org")
-           "* TODO %? %^g\n  %U\n  %x")
+           "* TODO %? %^G\n  %U\n  %x")
 	  ("ts" "Scheduled Todo" entry (file "~/jhu-org/inbox.org")
-           "* TODO %? %^g\n :SCHEDULED %^t\n")
+           "* TODO %? %^G\n :SCHEDULED %^t\n")
           ("tS" "Scheduled Todo with Clipboard" entry (file "~/jhu-org/inbox.org")
-           "* TODO %? %^g\n :SCHEDULED %^t \n  %x")
+           "* TODO %? %^G\n :SCHEDULED %^t \n  %x")
 	  ("c" "Consultations")
           ("cn" "New Consult" entry (file "~/jhu-org/consults.org")
-           "* ACTIVE %^{Patron Name}: %^{Short Description of Consult} %t %^g\n** Background\n%x\n** Interactions\n%?\n** TODOs")
+           "* %^{Short Description of Consult} | %^{Patron Name} | %^{School} %^G\n** Interactions\n** TODOs")
           ("cz" "Zoom Consult" entry (file "~/jhu-org/consults.org")
            "* TRANS-ZOOM Zoom Consult w/ %^{Patron Name}: %^{Short Description} %^t :file:%^g\n
             %?")
@@ -547,8 +658,9 @@
           ("nN" "Note with Clipboard" entry (file "~/jhu-org/todo.org")
            "* NOTE %?\n%U\n   %x" :empty-lines 1)
           ))
+
   (setq org-agenda-custom-commands
-        '(
+	'(
           ("e" "Exclusively TODOs"
            ((todo "TODO"
                   ((org-agenda-overriding-header "TODO")
@@ -561,8 +673,8 @@
             (tags "next" ((org-agenda-skip-function '(org-agenda-skip-entry-if 'todo '("DONE" "INACTIVE" "ACTIVE" "CANCELED")))
                           (org-tags-match-list-sublevels 'nil)))
             (agenda "" ((org-agenda-span 'month)
-                        (org-agenda-todo-list-sublevels 'indented)
-                        (org-agenda-entry-types '(:deadline :scheduled))
+			(org-agenda-todo-list-sublevels 'indented)
+			(org-agenda-entry-types '(:deadline :scheduled))
 			))
             ))
           ("w" "Weekly review"
@@ -576,8 +688,16 @@
             ))
           ("p" "Projects"
            ((todo "TODO|WAIT" (
-                               (org-agenda-files '("~/jhu-org/projects.org"))
-                               (org-super-agenda-groups
+			       (org-agenda-files '("~/jhu-org/projects.org"))
+			       (org-agenda-skip-function '(org-agenda-skip-entry-if 'notregexp "\\[#A\\]"))
+			       (org-super-agenda-groups
+				'((:auto-outline-path t)))))
+            )
+           )
+          ("n" "Next"
+           ((todo "TODO|WAIT" (
+			       (org-agenda-files '("~/jhu-org/todo.org"))
+			       (org-super-agenda-groups
 				'((:auto-outline-path t)))))
             )
            )
@@ -592,28 +712,28 @@
 	  
           ("d" "Daily Tasks"
            (
-            (agenda "" ((org-agenda-span 5)
-                        (org-agenda-skip-function '(org-agenda-skip-entry-if 'todo '("TRANS-EMAIL" "DONE" "INACTIVE" "ACTIVE" "CANCELED" "RESOURCE")))
+            (agenda "" ((org-agenda-span 6)
+			(org-agenda-files '("~/jhu-org/meetings.org" "~/jhu-org/consults.org" "~/jhu-org/calendar.org" "~/jhu-org/todo.org" "~/jhu-org/projects.org"))
+			(org-agenda-skip-function '(org-agenda-skip-entry-if 'todo '("TRANS-EMAIL" "DONE" "INACTIVE" "ACTIVE" "CANCELED" "RESOURCE")))
 					; (org-agenda-entry-types '(:date :deadline :scheduled))
-                        ))
+			))
             (alltodo "" ((org-agenda-overriding-header "")
-                         (org-agenda-skip-function '(org-agenda-skip-entry-if 'todo '("INACTIVE" "CANCELED")))
-                         (org-super-agenda-groups
+			 (org-agenda-skip-function '(org-agenda-skip-entry-if 'todo '("INACTIVE" "CANCELED")))
+			 (org-super-agenda-groups
                           '(
                             (:name "Today's TODOs"
                                    :tag "next"
                                    :order 1)
-                            (:name "Important (What to work on next)"
-                                   :priority ("A" "B")
-                                   :order 3)
                             (:name "Due Today"
                                    :scheduled today
                                    :deadline today
                                    :todo "today"
                                    :order 4)
                             (:name "To File in LibAnswers"
-                                   :tag "file"
-                                   :order 6)
+				   :and (
+					 :todo ("TRANS-EMAIL" "TRANS-ZOOM")
+					 :tag "file")
+				   :order 6)
                             (:discard (:todo "ACTIVE"))
                             (:name "Overdue"
                                    :deadline past
@@ -621,9 +741,42 @@
                             (:discard (:anything))))))))
 
           ))
-  
+
   ;; Ensure org files saved after a refile
   (advice-add 'org-refile :after 'org-save-all-org-buffers))
+;; Add visual padding to left of org-mode
+(use-package visual-fill-column
+  :hook (org-mode . org-visual-config))
+
+(use-package org-superstar
+  :after org
+  :hook (org-mode . org-superstar-mode)
+  :config
+  (setq org-superstar-leading-bullet ?\s))
+
+(use-package org-super-agenda
+  :after org
+  :hook (org-mode . org-super-agenda-mode))
+
+(use-package org-pomodoro
+  :after org
+  :config
+  (setq
+   user-alert-configuration (quote ((((:category . "org-pomodoro")) libnotify nil)))
+   )
+  (setq org-pomodoro-format "%s")
+  )
+
+(use-package org-sidebar
+  :after org
+  )
+;; org-roam
+(use-package org-roam
+  :ensure t
+  :custom
+  (org-roam-directory "~/jhu-org/roam")
+  )
+
 
 
 ;; Code
