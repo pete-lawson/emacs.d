@@ -407,6 +407,8 @@
   :after org
   :hook (org-mode . org-super-agenda-mode))
 
+(use-package org-ql)
+
 (use-package org-pomodoro
   :after org
   :config
