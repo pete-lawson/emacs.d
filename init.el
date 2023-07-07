@@ -424,8 +424,37 @@
 
 ;; Configure org-mode visual mode 
 (defun org-visual-config ()
+  (setq visual-fill-column-width 100
+        visual-fill-column-center-text t)
+  (visual-fill-column-mode 1))
+
+;; Add visual padding to left of org-mode
+(use-package visual-fill-column
+  :hook (org-mode . org-visual-config))
+
+(use-package org-superstar
+  :after org
+  :hook (org-mode . org-superstar-mode)
+  :config
+  (setq org-superstar-leading-bullet ?\s))
+
+(use-package org-super-agenda
+  :after org
+  :hook (org-mode . org-super-agenda-mode))
+
+(use-package org-ql)
+
+(use-package org-pomodoro
+  :after org
+  :config
+  (setq
+   user-alert-configuration (quote ((((:category . "org-pomodoro")) libnotify nil)))
+   )
+  (setq org-pomodoro-format "%s")
+  )
   (setq visual-fill-column-center-text t
 	visual-fill-column-width 100)
+
 (visual-fill-column-mode 1))
 
 ;; Org-Mode!
