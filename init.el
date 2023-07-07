@@ -642,7 +642,7 @@
            (
             (tags "consult" ((org-agenda-skip-function '(org-agenda-skip-entry-if 'nottodo '("TODO" "WAIT")))))
             (tags "next" ((org-agenda-skip-function '(org-agenda-skip-entry-if 'todo '("DONE" "INACTIVE" "ACTIVE" "CANCELED")))
-                          (org-tags-match-list-sublevels 'nil)))
+			  (org-tags-match-list-sublevels 'nil)))
             (agenda "" ((org-agenda-span 'month)
 			(org-agenda-todo-list-sublevels 'indented)
 			(org-agenda-entry-types '(:deadline :scheduled))
@@ -692,9 +692,12 @@
 			 (org-agenda-skip-function '(org-agenda-skip-entry-if 'todo '("INACTIVE" "CANCELED")))
 			 (org-super-agenda-groups
                           '(
-                            (:name "Today's TODOs"
-                                   :tag "next"
+                            (:name "Today's TODOs that are blocking someone"
+				   :and (:tag "next" :tag "blocking")
                                    :order 1)
+                            (:name "Today's remaining TODOs"
+                                   :tag "next"
+                                   :order 2)
                             (:name "Due Today"
                                    :scheduled today
                                    :deadline today
