@@ -455,8 +455,6 @@
   (setq visual-fill-column-center-text t
 	visual-fill-column-width 100)
 
-(visual-fill-column-mode 1))
-
 ;; Org-Mode!
 (use-package org
   :hook (org-mode . org-mode-setup)
