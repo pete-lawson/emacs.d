@@ -1,4 +1,4 @@
-					; My Custom Emacs Config
+;; My Custom Emacs Config
 ;;
 
 ;; STARTUP
@@ -128,9 +128,16 @@
 ;; disable line numbers for org, term, eshell
 (dolist (mode '(org-mode-hook
 		term-mode-hook
-		eshell-mode-hook))
+		eshell-mode-hook
+		pdf-view-mode-hook))
   (add-hook mode (lambda () (display-line-numbers-mode 0))))
 
+;; Set cursor color
+(set-cursor-color "#835083")
+
+;; h1 line mode highlight color
+(global-hl-line-mode 1)
+(set-face-attribute'hl-line nil :inherit nil :background "#f5eff5")
 
 ;; Configure Parentheses 
 (setq show-paren-delay 0)
@@ -211,6 +218,11 @@
   :config
   (setq ansi-color-for-comint-mode 'filter))
 
+;; Enable sane undo/redo
+(use-package undo-tree
+  :ensure t
+  :config
+  (global-undo-tree-mode 1))
 
 ;; Add mode for markdown
 (use-package markdown-mode
@@ -407,6 +419,30 @@
 	    (when (derived-mode-p 'magit-status-mode)
 	      (delete-other-windows)))))
 
+
+;; Use auctex for LaTeX
+(use-package auctex
+  :ensure t
+  :defer t
+  :config
+  (setq TeX-PDF-mode t))
+
+(use-package pdf-tools
+  :ensure t
+  ;;:mode ("\.pdf\'" . pdf-view-mode)
+  :config
+  ;; initialize
+  (pdf-tools-install))
+
+;; to use pdfview with auctex
+(setq TeX-view-program-selection '((output-pdf "PDF Tools"))
+      TeX-view-program-list '(("PDF Tools" TeX-pdf-tools-sync-view))
+      TeX-source-correlate-start-server t) ;; not sure if last line is neccessary
+
+;; to have the buffer refresh after compilation
+(add-hook 'TeX-after-compilation-finished-functions
+          #'TeX-revert-document-buffer)
+
 ;; Recent File Finder
 (use-package recentf
   :bind ("C-x C-r" . recentf-open-files)
@@ -422,7 +458,11 @@
 (defun org-mode-setup ()
   (visual-line-mode 1))
 
-;; Configure org-mode visual mode 
+;; Set inline imagess to width of 400 pixels
+(setq org-startup-with-inline-images t)
+(setq org-image-actual-width 500)
+
+;;Configure org-mode visual mode 
 (defun org-visual-config ()
   (setq visual-fill-column-width 100
         visual-fill-column-center-text t)
@@ -476,19 +516,14 @@
   ;; adjust the current paragraph.
   (add-hook 'org-mode-hook 'visual-line-mode)
 
-  ;; Use custom ellipsis for indicating a closed block
-  (setq org-ellipsis "  ▼")
-
   ;; Hide leading stars for clean nested bullets
   (setq org-hide-leading-stars nil)
 
   ;; Set fixed pitch and variable pitch fonts
   (custom-theme-set-faces
    'user
-   '(variable-pitch ((t (:family "ETBembo" :height 1.1))))
+   '(variable-pitch ((t (:family "ETBembo" :height 1.2))))
    '(fixed-pitch ((t ( :family "Fira Code Retina" :height 135)))))
-
-
 
   ;; We don't want everything to be variable pitch. Fix it with
   ;; custom faces.
@@ -511,6 +546,8 @@
    '(org-level-4 ((t (:inherit variable-pitch))) t)
    '(org-verbatim ((t (:inherit (shadow fixed-pitch))))))
 
+  ;; Scale the size of LaTeX previews
+  (setq org-format-latex-options (plist-put org-format-latex-options :scale 2.0))
 
   ;; It's done. Org is beautiful.
   ;; -------------------------------
@@ -519,9 +556,9 @@
   (setq org-enforce-todo-dependencies t)
   (setq org-agenda-dim-blocked-tasks 'nil)
   (setq org-agenda-window-setup 'only-window)
-  (setq org-agenda-tags-column -100)
-  (setq org-auto-align-tags t)
-  (setq org-tags-column -100)
+					;  (setq org-agenda-tags-column -100)
+					;  (setq org-auto-align-tags t)
+					;  (setq org-tags-column -100)
 					;(org-visual-config)
   (setq org-directory "~/jhu-org/")
 
@@ -775,7 +812,8 @@
 (use-package org-roam
   :ensure t
   :custom
-  (org-roam-directory "~/jhu-org/roam")
+  (org-roam-directory "~/org-work/mind-palace")
+  (setq org-roam-db-autosync-mode t) 
   )
 
 
