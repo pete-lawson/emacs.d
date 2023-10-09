@@ -11,6 +11,8 @@
 
 ;; System specific config
 (setq-default sysTypeSpecific  system-type) ;; get the system-type value
+;; Disable titlebar
+(set-frame-parameter nil 'undecorated t)
 
 ;; Font 
 (set-face-attribute 'default nil :font "Fira Code Retina" :height 165)
@@ -118,8 +120,8 @@
   (load-theme 'modus-operandi-tinted :no-confirm))
 
 ;; Set Transparency
-(set-frame-parameter (selected-frame) 'alpha '(98 98))
-(add-to-list 'default-frame-alist '(alpha 98 98))
+;;(set-frame-parameter (selected-frame) 'alpha '(98 98))
+;;(add-to-list 'default-frame-alist '(alpha 98 98))
 
 ;; add line numbers (except in term and org mode)
 (column-number-mode)
@@ -476,7 +478,10 @@
   :after org
   :hook (org-mode . org-superstar-mode)
   :config
-  (setq org-superstar-leading-bullet ?\s))
+  ;;(setq org-superstar-leading-bullet ?\s)
+  (with-eval-after-load 'org-superstar
+    (set-face-attribute 'org-superstar-header-bullet nil :height .8)
+  ))
 
 (use-package org-super-agenda
   :after org
@@ -517,12 +522,12 @@
   (add-hook 'org-mode-hook 'visual-line-mode)
 
   ;; Hide leading stars for clean nested bullets
-  (setq org-hide-leading-stars nil)
+  (setq org-hide-leading-stars t)
 
   ;; Set fixed pitch and variable pitch fonts
   (custom-theme-set-faces
    'user
-   '(variable-pitch ((t (:family "ETBembo" :height 1.2))))
+   '(variable-pitch ((t (:family "ETBembo" :height 1.0))))
    '(fixed-pitch ((t ( :family "Fira Code Retina" :height 135)))))
 
   ;; We don't want everything to be variable pitch. Fix it with
@@ -539,11 +544,14 @@
    '(org-property-value ((t (:inherit fixed-pitch))) t)
    '(org-special-keyword ((t (:inherit (font-lock-comment-face fixed-pitch)))))
    '(org-table ((t (:inherit fixed-pitch :foreground "#83a598"))))
-   '(org-tag ((t (:inherit (shadow fixed-pitch) :weight bold :height 1.1))))
-   '(org-level-1 ((t (:inherit variable-pitch :weight bold :height 1.2))) t)
-   '(org-level-2 ((t (:inherit variable-pitch :height 1.1))) t)
-   '(org-level-3 ((t (:inherit variable-pitch :height 1.0))) t)
+   '(org-tag ((t (:inherit (shadow fixed-pitch) :weight bold :height 1.3))))
+   '(org-level-1 ((t (:inherit variable-pitch :weight semi-bold :height 1.3))) t)
+   '(org-level-2 ((t (:inherit variable-pitch :height 1.2))) t)
+   '(org-level-3 ((t (:inherit variable-pitch :height 1.1))) t)
    '(org-level-4 ((t (:inherit variable-pitch))) t)
+   '(org-level-5 ((t (:inherit variable-pitch))) t)
+   '(org-level-6 ((t (:inherit variable-pitch))) t)
+   '(org-level-7 ((t (:inherit variable-pitch))) t)
    '(org-verbatim ((t (:inherit (shadow fixed-pitch))))))
 
   ;; Scale the size of LaTeX previews
@@ -785,12 +793,6 @@
 ;; Add visual padding to left of org-mode
 (use-package visual-fill-column
   :hook (org-mode . org-visual-config))
-
-(use-package org-superstar
-  :after org
-  :hook (org-mode . org-superstar-mode)
-  :config
-  (setq org-superstar-leading-bullet ?\s))
 
 (use-package org-super-agenda
   :after org
